@@ -159,7 +159,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
     <script>
         function alugarFilme(idFilme, tituloFilme) {
             if (confirm(`Deseja alugar o filme "${tituloFilme}"?`)) {
-                window.location.href = `alugar.php?id=${idFilme}`;
+                alert(`Filme "${tituloFilme}" alugado com sucesso! (demo)`);
             }
         }
     </script>
