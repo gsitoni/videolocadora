@@ -1,0 +1,74 @@
+/* Estilos do Perfil do Cliente - alinhado à estética da locadora */
+
+:root {
+  --bg: #1a1a1a;
+  --fg: #f5e6d3;
+  --muted: #d4c5b0;
+  --accent: #c77a4a;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.box {
+  max-width: 800px;
+  margin: 24px auto;
+  padding: 16px;
+}
+
+h1, h2 {
+  margin: 0 0 12px 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(139, 116, 78, 0.25);
+}
+
+ul li:last-child {
+  border-bottom: none;
+}
+
+img.poster-thumb {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+}
+
+.meta-year {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+  border: 1px solid rgba(139, 116, 78, 0.4);
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+a:hover {
+  background: rgba(199, 122, 74, 0.18);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
