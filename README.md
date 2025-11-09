@@ -307,6 +307,3 @@ Para sugestões ou dúvidas, entre em contato através do GitHub.- `locacao`: Co
 ---
 
 Desenvolvido com 💜 para o Clube da FitaPara ver a estrutura detalhada, consulte o arquivo `video_locadora.sql`.
-
-# Atualizado em 09/11/2025
-

@@ -1,0 +1,355 @@
+html {
+    overflow-x: hidden;
+    background-color: #fbcd7d;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
+
+header {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 10px;
+    transition: top 5s ease-in-out;
+}
+
+.container {
+    max-width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+header.rolagem {
+    background-color:#C14418;
+}
+
+header.rolagem a {
+    color: #160a17b6;
+}
+
+header.rolagem nav {
+    background-color: #f4e7cd;
+    border-radius: 50PX;
+    transition: .7s;
+}
+
+header.rolagem div.barra-de-busca {
+    background-color: #F7EACF;
+    border-radius: 50PX;
+    transition: .7s;
+}
+
+
+.logotipo-imagem {
+    height: 100px;
+    border-radius: 5%;
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.itens-do-menu {
+    background-color: #bf431abb;
+    border-radius: 50PX;
+    min-width: 600px;
+    max-width: 900px;
+    width: auto;
+    height: 55px;
+    transition: .5s;
+    margin: 20px;
+    flex: 1;
+}
+
+header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+header li {
+    display: inline-block;
+    margin: 4px 15px;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+header ul li a {
+    color: #F7EACF;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+header ul li a:hover {
+    color: #ffffff;
+}
+
+header ul li.sair a {
+    color: #F7EACF;
+    font-weight: 500;
+}
+
+.barra-de-busca {
+    width: 50px;
+    height: 15px;
+    margin-right: 30px;
+    padding: 20px;
+    background-color: #bf431abb;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 50px;
+    position: relative;
+    transition: .6s;
+    margin: 20px;
+}
+
+.barra-de-busca.ativar {
+    width: 400px;
+}
+
+.lupa-busca, .botao-de-fechar {
+    min-width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.lupa-busca i {
+    font-size: 35px;
+}
+
+.input-busca {
+   position: absolute;
+   left: 90px; 
+   height: 100%;
+   width: calc(100% - 120%);
+}
+
+.botao-de-fechar {
+    font-size: 30px;
+    margin-left: 35px;
+}
+
+.input-busca input {
+    border: 0;
+    outline: 0;
+    font-size: 20px;
+    background: none;
+    color: #F7EACF;
+}
+
+.banner {
+    width: 100%;
+    height: 100vh;
+    background-image: url(download5.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.titulo {
+    text-align: center;
+    padding: 10%;
+}
+
+/* Filmes em cartaz */
+.filmes {
+    background: #6e3520;
+    padding: 20px;
+    color: #fff;
+    margin-top: 50px;
+}
+
+.filmes h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filmes-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.img-poster{
+    height: 400px;
+}
+
+.card-filme {
+    background: #fff;
+    min-width: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #000;
+}
+
+.card-filme img {
+    width: 100%;
+    display: block;
+}
+
+.card-filme h3 {
+    font-size: 1rem;
+    margin: 10px;
+}
+
+.card-filme p {
+    font-size: 0.9rem;
+    margin: 0 10px 10px;
+}
+
+.navegacao {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.navegacao button {
+    background: #fff;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Avisos */
+.avisos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0a852;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.avisos h3 {
+    margin-bottom: 10px;
+}
+
+.avisos .data {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Equipe */
+.titulo-equipe {
+    text-align: center;
+    margin: 30px 0 10px;
+}
+
+.titulo-equipe span {
+    background: #d7301f;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.equipe {
+    background: #d7bfa0;
+    padding: 20px;
+}
+
+.equipe-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.membro {
+    background: #fff;
+    width: 150px;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.membro .foto {
+    background: #ccc;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Como funciona */
+.como-funciona {
+    background: #f7d793;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.como-funciona .caixa {
+    background: #ccc;
+    width: 200px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.como-funciona .seta {
+    width: 100px;
+    height: 50px;
+    background: #a13a1e;
+    border-radius: 50px 0 0 50px;
+}
+
+/* Rodapé */
+footer {
+    background: #222;
+    color: #fff;
+    padding: 30px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+footer h4 {
+    margin-bottom: 10px;
+}
+
+footer p,
+footer a {
+    font-size: 0.9rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/xampp/htdocs": "${workspaceRoot}/../../"
+            },
+            "xdebugSettings": {
+                "max_children": 128,
+                "max_data": 512,
+                "max_depth": 3
+            },
+            "ignore": [
+                "**/vendor/**/*.php"
+            ],
+            "log": true
+        },
+        {
+            "name": "Launch currently open script",
+            "type": "php",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "port": 9003,
+            "runtimeExecutable": "C:\\xampp\\php\\php.exe",
+            "runtimeArgs": [
+                "-dxdebug.start_with_request=yes"
+            ],
+            "env": {
+                "XDEBUG_MODE": "debug,develop",
+                "XDEBUG_CONFIG": "client_port=${port}"
+            }
+        }
+    ]
+}

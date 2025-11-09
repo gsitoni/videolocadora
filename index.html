@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento Web - Cibersegurança</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        
+    </style>
+</head>>
+<header id="header">
+    <div class="container">
+        <div class="flex">
+            <img class="logotipo-imagem" src="logo_site.png" alt="Logotipo do site.">
+            <nav class="itens-do-menu">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Filmes</a></li>
+                    <li><a href="#">Locação</a></li>
+                    <li><a href="#">Funcionários</a></li>
+                    <li><a href="index.php" class="btn-login-menu">Entrar</a></li>
+                </ul>
+            </nav>
+            <div class="barra-de-busca">
+                <div class="lupa-busca">
+                    <i class="bi bi-search"></i>
+                </div>
+                <div class="input-busca">
+                    <input type="text" placeholder="O quê você procura?">
+                </div>
+                <div class="botao-de-fechar">
+                    <i class="bi bi-x-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<body>
+    <section class="banner">
+        <h1></h1>    
+    </section>
+    
+    <section class="filmes">
+        <h2>Destaques</h2>
+        <div class="filmes-container" id="carrossel">
+            <div class="card-filme">
+                <img class="img-poster" src="poster-1.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-2.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-3.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+            <div class="card-filme">
+                <img class="img-poster" src="poster-4.jpg" alt="">
+                <h3>Nome do filme</h3>
+                <p>Descrição simples do filme...</p>
+            </div>
+        </div>
+        <div class="navegacao">
+            <button onclick="rolar(-220)">◀</button>
+            <button onclick="rolar(220)">▶</button>
+        </div>
+    </section>
+    
+    <section class="avisos">
+        <div>
+            <h3>Avisos importantes</h3>
+            <p>Exemplo de aviso principal em destaque...</p>
+        </div>
+        <div class="data">
+            10<br>OUT
+        </div>
+    </section>
+    
+    <div class="titulo-equipe">
+        <span>Criadores e colaboradores do site:</span>
+    </div>
+    <section class="equipe">
+        <div class="equipe-container">
+            <div class="membro">
+                <div class="foto"></div>
+                <h4>Pedro</h4>
+                <p>Um pouco sobre Pedro...</p>
+            </div>
+            <div class="membro">
+                <div class="foto"></div>
+                <h4>Gaby</h4>
+                <p>Um pouco sobre Gaby...</p>
+            </div>
+            <div class="membro">
+                <div class="foto"></div>
+                <h4>Giulia</h4>
+                <p>Um pouco sobre Giulia...</p>
+            </div>
+            <div class="membro">
+                <div class="foto"></div>
+                <h4>Thiago</h4>
+                <p>Um pouco sobre Thiago...</p>
+            </div>
+            <div class="membro">
+                <div class="foto"></div>
+                <h4>Tomás</h4>
+                <p>Um pouco sobre Tomás...</p>
+            </div>
+        </div>
+    </section>
+   
+    <section class="como-funciona">
+        <div class="caixa">Vídeo</div>
+        <div class="seta"></div>
+    </section>
+    
+    <footer>
+        <div>
+            <h4>Clube da fita:</h4>
+            <p>Informações diversas sobre o clube...</p>
+        </div>
+        <div>
+            <h4>Outras informações:</h4>
+            <p>Lojas</p>
+            <p>Termos e condições</p>
+            <p>Política de privacidade</p>
+        </div>
+        <div>
+            <h4>Contato:</h4>
+            <p>📧 Email</p>
+            <p>📱 Redes sociais</p>
+        </div>
+    </footer>
+<script src="main.js"></script>
+</body>
+</html>
