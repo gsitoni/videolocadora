@@ -1,100 +1,110 @@
 <?php
-session_start();
+// Arquivo: index.php
+// Objetivo: Roteia entre telas (home, cadastro, login, usuários) e processa formulários básicos.
+// Nota: Este script centraliza navegação baseada em 'page' (query string) e manipula sessão.
 
-$page = $_GET['page'] ?? 'home';
+session_start(); // Inicia sessão para armazenar dados de autenticação e estado do usuário.
 
-// Conectar ao banco de dados
-$conn = include 'config.php';
+$page = $_GET['page'] ?? 'home'; // Página alvo; se não vier definida, cairá em 'home'.
 
-$mensagem = "";
-$acesso_negado = false;
+// Conectar ao banco de dados: include retorna o objeto mysqli definido em config.php.
+$conn = include 'config.php'; // Mantém uma única conexão para todo o processamento desta requisição.
 
-// Verificar se está tentando acessar página de usuários
+$mensagem = ""; // Armazena feedback (sucesso/erro) a ser exibido ao usuário.
+$acesso_negado = false; // Flag para bloquear exibição de conteúdo administrativo.
+
+// Regra de acesso: se tentar acessar a página 'usuarios', valida login e privilégio admin.
 if ($page === 'usuarios') {
-    $usuario_logado = $_SESSION['usuario_logado'] ?? null;
+    $usuario_logado = $_SESSION['usuario_logado'] ?? null; // Obtém usuário logado (ou null se ausente).
     
-    if (!$usuario_logado) {
+    if (!$usuario_logado) { // Caso não esteja autenticado.
         $mensagem = "<div id='mensagem' class='mensagem error'>Você precisa fazer login para acessar esta página!</div>";
-        $acesso_negado = true;
-    } elseif (!($_SESSION['is_admin'] ?? false)) {
+        $acesso_negado = true; // Impede renderização da lista de usuários.
+    } elseif (!($_SESSION['is_admin'] ?? false)) { // Autenticado mas sem privilégio admin.
         $mensagem = "<div id='mensagem' class='mensagem error'>Acesso negado! Apenas administradores podem ver a lista de usuários.</div>";
         $acesso_negado = true;
     }
 }
 
+// Processamento de formulários — verifica se requisição é POST e age conforme a página.
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Fluxo de cadastro de novo cliente.
     if ($page === 'cadastro') {
-        $nome_cliente = $conn->real_escape_string($_POST['nome_cliente'] ?? '');
-        $cpf_cliente = $conn->real_escape_string($_POST['cpf_cliente'] ?? '');
-        $idade_cliente = $conn->real_escape_string($_POST['idade_cliente'] ?? '');
-        $telefone_cliente = $conn->real_escape_string($_POST['telefone_cliente'] ?? '');
-        $email_cliente = $conn->real_escape_string($_POST['email_cliente'] ?? '');
-        $username = $conn->real_escape_string($_POST['username'] ?? '');
-        $password = $conn->real_escape_string($_POST['password'] ?? '');
+        // Sanitização/escape contra SQL Injection básico (ideal: prepared statements).
+        $nome_cliente      = $conn->real_escape_string($_POST['nome_cliente'] ?? '');
+        $cpf_cliente       = $conn->real_escape_string($_POST['cpf_cliente'] ?? '');
+        $idade_cliente     = $conn->real_escape_string($_POST['idade_cliente'] ?? '');
+        $telefone_cliente  = $conn->real_escape_string($_POST['telefone_cliente'] ?? '');
+        $email_cliente     = $conn->real_escape_string($_POST['email_cliente'] ?? '');
+        $username          = $conn->real_escape_string($_POST['username'] ?? '');
+        $password          = $conn->real_escape_string($_POST['password'] ?? ''); // (Melhoria futura: armazenar hash da senha)
         
-        // echo "<pre>DEBUG: "; var_dump($_POST); echo "</pre>"; // Linha adicionada para debug
+        // Debug opcional do POST — descomentar para inspecionar dados recebidos.
+        // echo "<pre>DEBUG POST: "; var_dump($_POST); echo "</pre>";
 
+        // Validação mínima: todos os campos precisam estar preenchidos.
         if (!empty($nome_cliente) && !empty($cpf_cliente) && !empty($idade_cliente) && 
             !empty($telefone_cliente) && !empty($email_cliente) && !empty($username) && !empty($password)) {
             
-            // Verificar se o username ou CPF já existe
+            // Verifica se já existe o mesmo username ou CPF (evita duplicidade).
             $check_query = "SELECT id_cliente FROM cliente WHERE username = '$username' OR cpf_cliente = '$cpf_cliente'";
             $check_result = $conn->query($check_query);
             
-            if ($check_result->num_rows > 0) {
+            if ($check_result->num_rows > 0) { // Já cadastrado.
                 $mensagem = "<div id='mensagem' class='mensagem error'>Usuário ou CPF já cadastrado!</div>";
             } else {
-                // Inserir novo cliente
+                // Monta inserção do novo cliente (melhoria: prepared statements + hashing de senha).
                 $insert_query = "INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password) 
                                 VALUES ('$nome_cliente', '$cpf_cliente', '$idade_cliente', '$telefone_cliente', '$email_cliente', '$username', '$password')";
                 
-                // echo "<pre>DEBUG: "; var_dump($insert_query); echo "</pre>"; // Linha adicionada para debug
+                // echo "<pre>DEBUG INSERT: "; var_dump($insert_query); echo "</pre>"; // Descomente para ver SQL gerado.
 
-                if ($conn->query($insert_query)) {
+                if ($conn->query($insert_query)) { // Execução OK.
                     $mensagem = "<div id='mensagem' class='mensagem success'>Cliente cadastrado com sucesso!</div>";
-                } else {
+                } else { // Falhou a execução SQL.
                     $mensagem = "<div id='mensagem' class='mensagem error'>Erro ao cadastrar: " . $conn->error . "</div>";
                 }
             }
-        } else {
+        } else { // Falha de preenchimento.
             $mensagem = "<div id='mensagem' class='mensagem error'>Preencha todos os campos!</div>";
         }
         
+    // Fluxo de login.
     } elseif ($page === 'login') {
-        $username = $conn->real_escape_string($_POST['username'] ?? '');
-        $password = $conn->real_escape_string($_POST['password'] ?? '');
+        $username = $conn->real_escape_string($_POST['username'] ?? ''); // Sanitiza entrada de usuário.
+        $password = $conn->real_escape_string($_POST['password'] ?? ''); // Sanitiza senha (texto simples; melhorar para hash).
         
-        if (!empty($username) && !empty($password)) {
-            // Buscar cliente no banco
-            $login_query = "SELECT * FROM cliente WHERE username = '$username'";
-            $result = $conn->query($login_query);
+        if (!empty($username) && !empty($password)) { // Validação mínima.
+            $login_query = "SELECT * FROM cliente WHERE username = '$username'"; // Consulta dados do usuário.
+            $result = $conn->query($login_query); // Executa query.
             
-            if ($result->num_rows > 0) {
-                $cliente = $result->fetch_assoc();
-                // echo "<pre>DEBUG fetch_assoc: "; var_dump($cliente); echo "</pre>"; // adicionado para debug (linha 74)
+            if ($result->num_rows > 0) { // Encontrou o usuário.
+                $cliente = $result->fetch_assoc(); // Transforma linha em array associativo.
+                // echo "<pre>DEBUG LOGIN FETCH: "; var_dump($cliente); echo "</pre>"; // Debug opcional.
                 
-                // Verificar senha
-                if ($cliente['password'] === $password) {
+                if ($cliente['password'] === $password) { // Comparação direta (melhoria: usar password_verify com hash).
+                    // Armazena dados principais na sessão para uso em outras páginas.
                     $_SESSION['usuario_logado'] = $cliente['username'];
-                    $_SESSION['nome_cliente'] = $cliente['nome_cliente'];
-                    $_SESSION['is_admin'] = (bool)$cliente['is_admin'];
-                    $_SESSION['id_cliente'] = $cliente['id_cliente'];
-                    header('Location: home.php');
-                    exit;
-                } else {
+                    $_SESSION['nome_cliente']   = $cliente['nome_cliente'];
+                    $_SESSION['is_admin']       = (bool)$cliente['is_admin']; // Normaliza para booleano real.
+                    $_SESSION['id_cliente']     = $cliente['id_cliente'];
+                    header('Location: home.php'); // Redireciona para dashboard.
+                    exit; // Encerrar execução para evitar renderização da tela de login.
+                } else { // Senha errada.
                     $mensagem = "<div id='mensagem' class='mensagem error'>Senha incorreta!</div>";
                 }
-            } else {
+            } else { // Usuário não encontrado no banco.
                 $mensagem = "<div id='mensagem' class='mensagem error'>Usuário não encontrado!</div>";
             }
-        } else {
+        } else { // Campos vazios.
             $mensagem = "<div id='mensagem' class='mensagem error'>Preencha todos os campos!</div>";
         }
         
+    // Fluxo de logout.
     } elseif ($page === 'logout') {
-        session_destroy();
-        header('Location: index.html');
-        exit;
+        session_destroy(); // Remove todos os dados da sessão (deslogar).
+        header('Location: index.html'); // Redireciona para página estática inicial.
+        exit; // Garante término da execução.
     }
 }
 ?>
@@ -103,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo ucfirst($page); ?> - Sistema Clube da Fita</title>
+    <title><?php echo ucfirst($page); ?> - Sistema Clube da Fita</title> <!-- Título dinâmico com capitalização da página -->
     <link rel="stylesheet" href="index.css">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -117,19 +127,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </script>
 </head>
 
-<body class="<?php echo $page; ?>">
+<body class="<?php echo $page; ?>"> <!-- Define classe do body igual ao nome da página para estilização contextual -->
     
-    <?php echo $mensagem; ?>
+    <?php echo $mensagem; ?> <!-- Feedback ao usuário (erros/sucesso) -->
 
     <?php if ($page === 'home'): ?>
         <div class="home-container">
             
             <h1>Clube da Fita</h1>
             
-            <?php if (isset($_SESSION['usuario_logado'])): ?>
+            <?php if (isset($_SESSION['usuario_logado'])): ?> <!-- Bloco para usuários autenticados -->
                 <div class="usuario-info-box">
                     <p>Bem-vindo, <strong><?php echo htmlspecialchars($_SESSION['nome_cliente'] ?? $_SESSION['usuario_logado']); ?></strong>!</p>
-                    <?php if ($_SESSION['is_admin']): ?>
+                    <?php if ($_SESSION['is_admin']): ?> <!-- Exibe badge se perfil for administrador -->
                         <span class="badge-admin">ADMINISTRADOR</span>
                     <?php endif; ?>
                 </div>
@@ -138,22 +148,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php endif; ?>
             
             <div class="buttons-container">
-                <?php if (isset($_SESSION['usuario_logado'])): ?>
+                <?php if (isset($_SESSION['usuario_logado'])): ?> <!-- Se logado, mostra atalho para página inicial -->
                     <a href="home.php" class="btn-link btn-destaque">
                         <span class="btn-icon">🎬</span>
                         Ir para Página Inicial
                     </a>
                 <?php endif; ?>
                 
-                <?php if (!isset($_SESSION['usuario_logado'])): ?>
+                <?php if (!isset($_SESSION['usuario_logado'])): ?> <!-- Visitante: mostra botões cadastro/login -->
                     <a href="index.php?page=cadastro" class="btn-link">Fazer Cadastro</a>
                     <a href="index.php?page=login" class="btn-link">Fazer Login</a>
                 <?php else: ?>
-                    <?php if ($_SESSION['is_admin']): ?>
-                        <a href="index.php?page=usuarios" class="btn-link">Ver Clientes</a>
+                    <?php if ($_SESSION['is_admin']): ?> <!-- Link extra para lista de usuários se admin -->
+                        <a href="index.php?page=usuarios" class="btn-link">Ver Clientes</a> <!-- Navega para área administrativa -->
                     <?php endif; ?>
                     <form method="POST" action="index.php?page=logout" style="width: 100%;">
-                        <button type="submit" class="btn-link" style="width: 100%; border: none; cursor: pointer;">Sair</button>
+                        <button type="submit" class="btn-link" style="width: 100%; border: none; cursor: pointer;">Sair</button> <!-- Botão de logout usando formulário POST -->
                     </form>
                 <?php endif; ?>
             </div>
@@ -164,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </div>
 
-    <?php elseif ($page === 'cadastro'): ?>
+    <?php elseif ($page === 'cadastro'): ?> <!-- Formulário de cadastro de novo cliente -->
         <form id="form-cadastro" class="form-container form-cadastro-completo" action="index.php?page=cadastro" method="POST">
   
             <fieldset>
@@ -236,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </fieldset>
         </form>
         
-    <?php elseif ($page === 'login'): ?>
+    <?php elseif ($page === 'login'): ?> <!-- Formulário de login -->
         <form id="form-login" class="form-container" action="index.php?page=login" method="POST">
             
             <fieldset>
@@ -266,8 +276,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </fieldset>
         </form>
         
-    <?php elseif ($page === 'usuarios'): ?>
-        <?php if ($acesso_negado): ?>
+    <?php elseif ($page === 'usuarios'): ?> <!-- Página administrativa: listagem de clientes -->
+    <?php if ($acesso_negado): ?> <!-- Renderiza aviso de acesso negado se flag estiver ativa -->
             <div class="home-container">
                 <h1>Acesso Negado</h1>
                 <div class="acesso-negado-box">
@@ -291,8 +301,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 
                 <?php 
-                $clientes_query = "SELECT * FROM cliente ORDER BY data_cadastro DESC";
-                $clientes_result = $conn->query($clientes_query);
+                $clientes_query = "SELECT * FROM cliente ORDER BY data_cadastro DESC"; // Busca clientes ordenados pelo cadastro mais recente
+                $clientes_result = $conn->query($clientes_query); // Executa consulta de listagem de clientes
                 
                 if ($clientes_result->num_rows == 0): ?>
                     <div class="usuarios-vazio">
@@ -314,27 +324,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="usuarios-lista">
                         <?php 
                         $index = 0;
-                        while ($cliente = $clientes_result->fetch_assoc()): 
+                        while ($cliente = $clientes_result->fetch_assoc()):  // Itera cada cliente retornado como array associativo
                             $index++;
                         ?>
                             <div class="usuario-card cliente-card">
                                 <div class="usuario-avatar">
-                                    <?php echo strtoupper(substr($cliente['nome_cliente'], 0, 2)); ?>
+                                    <?php echo strtoupper(substr($cliente['nome_cliente'], 0, 2)); ?> <!-- Avatar com iniciais do nome -->
                                 </div>
                                 <div class="usuario-info">
                                     <h3>
                                         <?php echo htmlspecialchars($cliente['nome_cliente']); ?>
-                                        <?php if ($cliente['is_admin']): ?>
+                                        <?php if ($cliente['is_admin']): ?> <!-- Marca admin diretamente no card -->
                                             <span class="badge-mini-admin">ADMIN</span>
                                         <?php endif; ?>
                                     </h3>
-                                    <p><strong>Usuário:</strong> <?php echo htmlspecialchars($cliente['username']); ?></p>
-                                    <p><strong>CPF:</strong> <?php echo htmlspecialchars($cliente['cpf_cliente']); ?></p>
-                                    <p><strong>Email:</strong> <?php echo htmlspecialchars($cliente['email_cliente']); ?></p>
-                                    <p><strong>Telefone:</strong> <?php echo htmlspecialchars($cliente['telefone_cliente']); ?></p>
-                                    <p><strong>Idade:</strong> <?php echo $cliente['idade_cliente']; ?> anos</p>
+                                    <p><strong>Usuário:</strong> <?php echo htmlspecialchars($cliente['username']); ?></p> <!-- Username escolhido -->
+                                    <p><strong>CPF:</strong> <?php echo htmlspecialchars($cliente['cpf_cliente']); ?></p> <!-- Documento do cliente -->
+                                    <p><strong>Email:</strong> <?php echo htmlspecialchars($cliente['email_cliente']); ?></p> <!-- E-mail cadastrado -->
+                                    <p><strong>Telefone:</strong> <?php echo htmlspecialchars($cliente['telefone_cliente']); ?></p> <!-- Telefone para contato -->
+                                    <p><strong>Idade:</strong> <?php echo $cliente['idade_cliente']; ?> anos</p> <!-- Idade informada -->
                                     <?php if ($cliente['data_cadastro']): ?>
-                                        <p><strong>Cadastro:</strong> <?php echo date('d/m/Y H:i', strtotime($cliente['data_cadastro'])); ?></p>
+                                        <p><strong>Cadastro:</strong> <?php echo date('d/m/Y H:i', strtotime($cliente['data_cadastro'])); ?></p> <!-- Data/hora de criação do registro -->
                                     <?php endif; ?>
                                 </div>
                                 <div class="usuario-badge">
@@ -357,5 +367,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </body>
 </html>
 <?php
-$conn->close();
+$conn->close(); // Fecha a conexão com o banco liberando recursos.
 ?>

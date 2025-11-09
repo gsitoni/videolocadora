@@ -1,26 +1,29 @@
 <?php
-session_start();
+// Arquivo: home.php
+// Objetivo: Exibir dashboard principal após login com informações básicas e navegação.
+// Observação: Esta página assume que o usuário já realizou login e mantém dados na sessão.
 
-// Verificar se o usuário está logado
+session_start(); // Inicia/retoma a sessão para acessar variáveis de controle de autenticação.
+
+// Autorização: se não há usuário logado na sessão, redireciona para página inicial (login/cadastro).
 if (!isset($_SESSION['usuario_logado'])) {
-    header('Location: index.php');
-    exit;
+    header('Location: index.php'); // Redireciona antes de qualquer saída HTML.
+    exit; // Interrompe execução para evitar que o restante do conteúdo seja enviado.
 }
 
-$usuario_logado = $_SESSION['usuario_logado'];
-$nome_cliente = $_SESSION['nome_cliente'] ?? $usuario_logado;
-$is_admin = $_SESSION['is_admin'] ?? false;
+// Variáveis de contexto do usuário — usadas para personalizar a interface.
+$usuario_logado = $_SESSION['usuario_logado']; // Username armazenado na sessão.
+$nome_cliente = $_SESSION['nome_cliente'] ?? $usuario_logado; // Nome real; fallback para username se não definido.
+$is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios administrativos.
 
-// Debug: mostrar valores da sessão (remova em produção)
-// echo "<pre>DEBUG SESSION:\n";
+// (Opcional) Debug da sessão — descomente para inspecionar valores durante desenvolvimento.
+// echo "<pre>DEBUG SESSION:\n"; // Início de bloco formatado.
 // var_dump([
 //     'usuario_logado' => $usuario_logado,
 //     'nome_cliente' => $nome_cliente,
 //     'is_admin' => $is_admin,
-// ]);
-// echo "</pre>";
-
-
+// ]); // Exibe estrutura das variáveis-chave.
+// echo "</pre>"; // Fim do bloco.
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -67,8 +70,8 @@ $is_admin = $_SESSION['is_admin'] ?? false;
     <!-- User Info Badge -->
     <div class="user-badge">
         <i class="bi bi-person-circle"></i>
-        <span>Olá, <strong><?php echo htmlspecialchars($nome_cliente); ?></strong>!</span>
-        <?php if ($is_admin): ?>
+        <span>Olá, <strong><?php echo htmlspecialchars($nome_cliente); ?></strong>!</span> <!-- Saudação personalizada usando nome ou username -->
+        <?php if ($is_admin): ?> <!-- Exibe badge ADMIN apenas para usuários com is_admin=true -->
             <span class="admin-tag">ADMIN</span>
         <?php endif; ?>
     </div>
@@ -126,7 +129,7 @@ $is_admin = $_SESSION['is_admin'] ?? false;
             <p>Bem-vindo ao sistema! Explore nosso catálogo de filmes clássicos.</p>
         </div>
         <div class="data">
-            <?php echo date('d'); ?><br><?php echo strtoupper(date('M')); ?>
+            <?php echo date('d'); ?><br><?php echo strtoupper(date('M')); ?> <!-- Dia e mês atuais (em maiúsculas) -->
         </div>
     </section>
 
