@@ -369,3 +369,33 @@ body {
     color: #b8a998;
     font-size: 13px;
 }
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 992px) {
+    .container-header { padding: 0 16px; }
+    .filmes-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .filme-poster { height: 180px; }
+}
+
+@media (max-width: 768px) {
+    .container-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .logo-area h1 { font-size: 20px; }
+    .nav-locadora { width: 100%; justify-content: space-between; }
+
+    .banner-locadora { padding: 40px 16px; }
+    .banner-content h2 { font-size: 28px; }
+    .banner-content p { font-size: 16px; }
+
+    .container-catalogo h2 { font-size: 26px; }
+    .filmes-grid { grid-template-columns: 1fr; }
+    .filme-info { padding: 18px; }
+    .btn-alugar { font-size: 14px; padding: 12px; }
+
+    .footer-content { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (max-width: 480px) {
+    .logo-locadora { width: 48px; height: 48px; }
+    .btn-voltar-home { padding: 8px 12px; font-size: 12px; }
+    .filme-info h3 { font-size: 18px; }
+}

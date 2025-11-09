@@ -353,3 +353,36 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .flex { flex-wrap: wrap; gap: 12px; }
+    .logotipo-imagem { height: 72px; }
+    .itens-do-menu { min-width: 0; width: calc(100% - 40px); height: auto; }
+    header ul { flex-wrap: wrap; row-gap: 6px; }
+    .barra-de-busca { margin-left: 20px; }
+    .img-poster { height: 320px; }
+    .filmes { padding: 16px; }
+}
+
+@media (max-width: 768px) {
+    header { padding: 18px 10px; }
+    .flex { flex-direction: column; align-items: center; }
+    .itens-do-menu { width: 100%; margin: 10px 0; height: auto; }
+    .barra-de-busca { width: calc(100% - 40px); margin: 10px 0; }
+    .barra-de-busca.ativar { width: calc(100% - 40px); }
+    .input-busca { position: static; width: auto; left: 0; flex: 1; }
+    .lupa-busca i { font-size: 24px; }
+    .banner { height: 60vh; }
+    .img-poster { height: 240px; }
+    .avisos { flex-direction: column; align-items: stretch; gap: 12px; }
+    .como-funciona { flex-direction: column; gap: 16px; }
+}
+
+@media (max-width: 480px) {
+    header ul li a { padding: 6px 8px; font-size: 0.9rem; }
+    .navegacao button { padding: 8px; }
+    .card-filme { min-width: 160px; }
+    .img-poster { height: 200px; }
+    footer { padding: 20px; }
+}

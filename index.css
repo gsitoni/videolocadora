@@ -407,3 +407,37 @@ legend::before {
     from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
     to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+/* ===== Responsividade ===== */
+@media (max-width: 992px) {
+    .home-container, .form-container { max-width: 500px; }
+    fieldset { padding: 32px 28px; }
+}
+
+@media (max-width: 768px) {
+    body { padding: 14px; }
+    .home-container { padding: 38px 28px; }
+    .home-container h1 { font-size: 24px; }
+    fieldset { padding: 30px 24px; }
+    legend { font-size: 22px; }
+    .form-box input { padding: 14px 16px; font-size: 14px; }
+    .btn-cadastro, .btn-login { padding: 14px 20px; font-size: 14px; }
+    .usuarios-container { padding: 32px 24px; }
+    .usuario-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .usuario-avatar { margin-right: 0; }
+    .usuarios-stats { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+}
+
+@media (max-width: 520px) {
+    .home-container, .form-container { padding: 30px 20px; }
+    .home-container h1 { font-size: 21px; }
+    legend { font-size: 20px; }
+    .btn-link { padding: 14px 22px; font-size: 14px; }
+    .usuarios-container { padding: 28px 18px; }
+    .usuario-info p { font-size: 12px; }
+}
+
+@media (max-width: 400px) {
+    .btn-link, .btn-cadastro, .btn-login { padding: 12px 18px; font-size: 13px; }
+    .home-container { padding: 26px 16px; }
+}
