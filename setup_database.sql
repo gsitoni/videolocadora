@@ -32,12 +32,16 @@ CREATE TABLE IF NOT EXISTS filme (
     ident_duracao VARCHAR(10) NOT NULL,
     ident_elenco MEDIUMTEXT NOT NULL,
     ident_titulo CHAR(50) NOT NULL,
+    imagem VARCHAR(255) DEFAULT NULL,
     ident_midia VARCHAR(20) NOT NULL,
     ident_nome_diretor VARCHAR(50) NOT NULL,
     ident_class_indic VARCHAR(20) NOT NULL,
     ident_sinopse MEDIUMTEXT NOT NULL,
     PRIMARY KEY (id_filme)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Atualização segura para bases já existentes (adiciona coluna se ainda não existir)
+ALTER TABLE filme ADD COLUMN IF NOT EXISTS imagem VARCHAR(255) NULL AFTER ident_titulo;
 
 -- Verificar e criar tabela funcionario se não existir
 CREATE TABLE IF NOT EXISTS funcionario (
@@ -109,29 +113,29 @@ SELECT 'Jefferson Rodrigo', '12345678910', 31, '(41)96582-3158', 'jeffer.rodr@gm
 WHERE NOT EXISTS (SELECT 1 FROM cliente WHERE username = 'jefferson');
 
 -- Inserir filmes de exemplo
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '8', 1, 'Drama', '2019-10-03', '02:02:00', 'Joaquin Phoenix, Robert De Niro', 'Coringa', 'Blu-ray', 'Todd Phillips', '+16', 'Isolado, o comediante Arthur Fleck se transforma no Coringa'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '8', 1, 'Drama', '2019-10-03', '02:02:00', 'Joaquin Phoenix, Robert De Niro', 'Coringa', 'images/coringa.jpg', 'Blu-ray', 'Todd Phillips', '+16', 'Isolado, o comediante Arthur Fleck se transforma no Coringa'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 1);
 
 -- Inserir ~50 filmes adicionais (dados reais de título/direção/elenco/datas; sinopses curtas autorais)
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '1', 2, 'Drama', '1994-09-23', '02:22:00', 'Tim Robbins, Morgan Freeman', 'The Shawshank Redemption', 'Blu-ray', 'Frank Darabont', '+16', 'Dois presos formam amizade e buscam esperança em anos de confinamento'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 2, 'Drama', '1994-09-23', '02:22:00', 'Tim Robbins, Morgan Freeman', 'The Shawshank Redemption', 'images/the-shawshank-redemption.jpg', 'Blu-ray', 'Frank Darabont', '+16', 'Dois presos formam amizade e buscam esperança em anos de confinamento'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 2);
 
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '2', 3, 'Crime', '1972-03-24', '02:55:00', 'Marlon Brando, Al Pacino', 'The Godfather', 'DVD', 'Francis Ford Coppola', '+16', 'Patriarca de família mafiosa prepara a sucessão em meio a guerras de poder'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 3, 'Crime', '1972-03-24', '02:55:00', 'Marlon Brando, Al Pacino', 'The Godfather', 'images/the-godfather.jpg', 'DVD', 'Francis Ford Coppola', '+16', 'Patriarca de família mafiosa prepara a sucessão em meio a guerras de poder'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 3);
 
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '3', 4, 'Ação', '2008-07-18', '02:32:00', 'Christian Bale, Heath Ledger', 'The Dark Knight', 'Blu-ray', 'Christopher Nolan', '+14', 'Batman enfrenta o Caos instaurado pelo Coringa em Gotham'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 4, 'Ação', '2008-07-18', '02:32:00', 'Christian Bale, Heath Ledger', 'The Dark Knight', 'images/the-dark-knight.jpg', 'Blu-ray', 'Christopher Nolan', '+14', 'Batman enfrenta o Caos instaurado pelo Coringa em Gotham'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 4);
 
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '4', 5, 'Ficção Científica', '2010-07-16', '02:28:00', 'Leonardo DiCaprio, Joseph Gordon-Levitt', 'Inception', 'Blu-ray', 'Christopher Nolan', '+12', 'Um ladrão invade sonhos para plantar ideias e enfrenta seus próprios fantasmas'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 5, 'Ficção Científica', '2010-07-16', '02:28:00', 'Leonardo DiCaprio, Joseph Gordon-Levitt', 'Inception', 'images/inception.jpg', 'Blu-ray', 'Christopher Nolan', '+12', 'Um ladrão invade sonhos para plantar ideias e enfrenta seus próprios fantasmas'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 5);
 
-INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
-SELECT '5', 6, 'Crime', '1994-10-14', '02:34:00', 'John Travolta, Samuel L. Jackson', 'Pulp Fiction', 'DVD', 'Quentin Tarantino', '+16', 'Histórias entrelaçadas de criminosos e acasos violentos em Los Angeles'
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 6, 'Crime', '1994-10-14', '02:34:00', 'John Travolta, Samuel L. Jackson', 'Pulp Fiction', 'images/pulp-fiction.jpg', 'DVD', 'Quentin Tarantino', '+16', 'Histórias entrelaçadas de criminosos e acasos violentos em Los Angeles'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 6);
 
 INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
@@ -318,3 +322,21 @@ WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 51);
 INSERT INTO funcionario (idade_funcionario, nome_funcionario, salario_funcionario, turno_funcionario, cargo_funcionario, sexo_funcionario, cpf_funcionario, email_funcionario)
 SELECT 25, 'Maria Silva', 2500.00, 'Manhã', 'Atendente', 'Feminino', '98765432100', 'maria@clubedafita.com'
 WHERE NOT EXISTS (SELECT 1 FROM funcionario WHERE cpf_funcionario = '98765432100');
+
+-- Popular coluna de imagem automaticamente para qualquer filme sem caminho definido
+-- Gera um slug do título (minúsculas, troca espaços por hífen e remove pontuação básica)
+UPDATE filme
+SET imagem = CONCAT(
+    'images/',
+    REPLACE(
+        REPLACE(
+            REPLACE(
+                REPLACE(
+                    REPLACE(LOWER(ident_titulo), ' ', '-'),
+                ':', ''),
+            '''', ''),
+        '.', ''),
+    ',', ''),
+    '.jpg'
+)
+WHERE imagem IS NULL;
