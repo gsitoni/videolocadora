@@ -1,6 +1,9 @@
 -- Criar banco de dados se não existir
-CREATE DATABASE IF NOT EXISTS video_locadora;
+CREATE DATABASE IF NOT EXISTS video_locadora CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE video_locadora;
+-- Garantir que a conexão/interpretador deste script use UTF-8 completo
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 
 -- Verificar e criar tabela cliente se não existir
 CREATE TABLE IF NOT EXISTS cliente (
@@ -17,7 +20,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     PRIMARY KEY (id_cliente),
     UNIQUE KEY cpf_cliente (cpf_cliente),
     UNIQUE KEY username (username)
-);
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Verificar e criar tabela filme se não existir
 CREATE TABLE IF NOT EXISTS filme (
@@ -34,7 +37,7 @@ CREATE TABLE IF NOT EXISTS filme (
     ident_class_indic VARCHAR(20) NOT NULL,
     ident_sinopse MEDIUMTEXT NOT NULL,
     PRIMARY KEY (id_filme)
-);
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Verificar e criar tabela funcionario se não existir
 CREATE TABLE IF NOT EXISTS funcionario (
@@ -48,7 +51,7 @@ CREATE TABLE IF NOT EXISTS funcionario (
     cpf_funcionario CHAR(20) NOT NULL,
     email_funcionario VARCHAR(50) NOT NULL,
     PRIMARY KEY (id_funcionario)
-);
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Verificar e criar tabela locacao se não existir
 CREATE TABLE IF NOT EXISTS locacao (
@@ -77,7 +80,7 @@ CREATE TABLE IF NOT EXISTS locacao (
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_filme) REFERENCES filme(id_filme) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario) ON DELETE CASCADE ON UPDATE CASCADE
-);
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Verificar e criar tabela pagamento se não existir
 CREATE TABLE IF NOT EXISTS pagamento (
@@ -94,7 +97,7 @@ CREATE TABLE IF NOT EXISTS pagamento (
     PRIMARY KEY (id_pagamento),
     FOREIGN KEY (id_filme) REFERENCES filme(id_filme) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_locacao) REFERENCES locacao(id_locacao) ON DELETE CASCADE ON UPDATE CASCADE
-);
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Inserir dados de exemplo apenas se as tabelas estiverem vazias
 INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password, is_admin)
@@ -109,6 +112,207 @@ WHERE NOT EXISTS (SELECT 1 FROM cliente WHERE username = 'jefferson');
 INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
 SELECT '8', 1, 'Drama', '2019-10-03', '02:02:00', 'Joaquin Phoenix, Robert De Niro', 'Coringa', 'Blu-ray', 'Todd Phillips', '+16', 'Isolado, o comediante Arthur Fleck se transforma no Coringa'
 WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 1);
+
+-- Inserir ~50 filmes adicionais (dados reais de título/direção/elenco/datas; sinopses curtas autorais)
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 2, 'Drama', '1994-09-23', '02:22:00', 'Tim Robbins, Morgan Freeman', 'The Shawshank Redemption', 'Blu-ray', 'Frank Darabont', '+16', 'Dois presos formam amizade e buscam esperança em anos de confinamento'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 2);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 3, 'Crime', '1972-03-24', '02:55:00', 'Marlon Brando, Al Pacino', 'The Godfather', 'DVD', 'Francis Ford Coppola', '+16', 'Patriarca de família mafiosa prepara a sucessão em meio a guerras de poder'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 3);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 4, 'Ação', '2008-07-18', '02:32:00', 'Christian Bale, Heath Ledger', 'The Dark Knight', 'Blu-ray', 'Christopher Nolan', '+14', 'Batman enfrenta o Caos instaurado pelo Coringa em Gotham'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 4);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 5, 'Ficção Científica', '2010-07-16', '02:28:00', 'Leonardo DiCaprio, Joseph Gordon-Levitt', 'Inception', 'Blu-ray', 'Christopher Nolan', '+12', 'Um ladrão invade sonhos para plantar ideias e enfrenta seus próprios fantasmas'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 5);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 6, 'Crime', '1994-10-14', '02:34:00', 'John Travolta, Samuel L. Jackson', 'Pulp Fiction', 'DVD', 'Quentin Tarantino', '+16', 'Histórias entrelaçadas de criminosos e acasos violentos em Los Angeles'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 6);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 7, 'Drama', '1999-10-15', '02:19:00', 'Brad Pitt, Edward Norton', 'Fight Club', 'DVD', 'David Fincher', '+18', 'Um homem encontra uma via de escape em um clube secreto de luta'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 7);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 8, 'Drama', '1994-07-06', '02:22:00', 'Tom Hanks, Robin Wright', 'Forrest Gump', 'Blu-ray', 'Robert Zemeckis', '+12', 'Um homem simples atravessa décadas de história com coração e sorte'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 8);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 9, 'Ficção Científica', '1999-03-31', '02:16:00', 'Keanu Reeves, Laurence Fishburne', 'The Matrix', 'Blu-ray', 'Lana Wachowski & Lilly Wachowski', '+14', 'Um hacker descobre a verdade sobre a realidade e enfrenta as máquinas'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 9);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 10, 'Ficção Científica', '2014-11-07', '02:49:00', 'Matthew McConaughey, Anne Hathaway', 'Interstellar', 'Blu-ray', 'Christopher Nolan', '+12', 'Exploradores atravessam um buraco de minhoca em busca de um novo lar'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 10);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 11, 'Drama', '2019-05-30', '02:12:00', 'Song Kang-ho, Choi Woo-shik', 'Parasite', 'Blu-ray', 'Bong Joon-ho', '+16', 'Famílias de mundos opostos se infiltram e colidem em plano arriscado'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 11);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 12, 'Ação', '2019-04-26', '03:01:00', 'Robert Downey Jr., Chris Evans', 'Avengers: Endgame', 'Blu-ray', 'Anthony Russo & Joe Russo', '+12', 'Heróis unem forças para reverter uma catástrofe universal'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 12);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 13, 'Romance', '1997-12-19', '03:14:00', 'Leonardo DiCaprio, Kate Winslet', 'Titanic', 'DVD', 'James Cameron', '+12', 'Um amor inesperado nasce a bordo de um navio destinado ao desastre'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 13);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 14, 'Ação', '2000-05-05', '02:35:00', 'Russell Crowe, Joaquin Phoenix', 'Gladiator', 'DVD', 'Ridley Scott', '+16', 'Um general romano busca vingança como gladiador após traição imperial'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 14);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 15, 'Fantasia', '2001-12-19', '02:58:00', 'Elijah Wood, Ian McKellen', 'The Lord of the Rings: The Fellowship of the Ring', 'Blu-ray', 'Peter Jackson', '+12', 'Um hobbit parte para destruir um anel que corrompe tudo ao redor'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 15);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 16, 'Fantasia', '2002-12-18', '02:59:00', 'Elijah Wood, Viggo Mortensen', 'The Lord of the Rings: The Two Towers', 'Blu-ray', 'Peter Jackson', '+12', 'A jornada continua enquanto as forças se dividem e as ameaças crescem'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 16);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 17, 'Fantasia', '2003-12-17', '03:21:00', 'Elijah Wood, Sean Astin', 'The Lord of the Rings: The Return of the King', 'Blu-ray', 'Peter Jackson', '+12', 'O confronto final decide o destino da Terra-média e do Um Anel'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 17);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 18, 'Ficção Científica', '1977-05-25', '02:01:00', 'Mark Hamill, Harrison Ford', 'Star Wars: A New Hope', 'DVD', 'George Lucas', '+10', 'Um fazendeiro espacial se junta à rebelião contra um império tirano'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 18);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 19, 'Ficção Científica', '1980-05-21', '02:04:00', 'Mark Hamill, Carrie Fisher', 'Star Wars: The Empire Strikes Back', 'DVD', 'Irvin Kershner', '+10', 'A rebelião sofre perdas enquanto segredos familiares vêm à tona'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 19);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 20, 'Ficção Científica', '1983-05-25', '02:11:00', 'Mark Hamill, Harrison Ford', 'Star Wars: Return of the Jedi', 'DVD', 'Richard Marquand', '+10', 'A última batalha contra o império determina o destino da galáxia'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 20);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 21, 'Drama', '2010-10-01', '02:00:00', 'Jesse Eisenberg, Andrew Garfield', 'The Social Network', 'Digital', 'David Fincher', '+12', 'A criação de uma rede social gera fortuna e brigas judiciais'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 21);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 22, 'Drama', '2014-10-10', '01:47:00', 'Miles Teller, J.K. Simmons', 'Whiplash', 'Blu-ray', 'Damien Chazelle', '+14', 'Um baterista ambicioso enfrenta um mentor implacável em busca da perfeição'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 22);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 23, 'Musical', '2016-12-09', '02:08:00', 'Ryan Gosling, Emma Stone', 'La La Land', 'Blu-ray', 'Damien Chazelle', '+10', 'Um músico e uma atriz lutam pelos sonhos e pelo amor em Los Angeles'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 23);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 24, 'Ação', '2015-05-15', '02:00:00', 'Tom Hardy, Charlize Theron', 'Mad Max: Fury Road', 'Blu-ray', 'George Miller', '+16', 'Em um deserto pós-apocalíptico, uma fuga desencadeia guerra selvagem'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 24);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 25, 'Animação', '2018-12-14', '01:57:00', 'Shameik Moore, Jake Johnson', 'Spider-Man: Into the Spider-Verse', 'Blu-ray', 'Bob Persichetti, Peter Ramsey, Rodney Rothman', 'L', 'Vários Homens-Aranha colidem em uma aventura multiversal animada'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 25);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 26, 'Animação', '1995-11-22', '01:21:00', 'Tom Hanks, Tim Allen', 'Toy Story', 'DVD', 'John Lasseter', 'L', 'Brinquedos ganham vida e descobrem o valor da amizade'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 26);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 27, 'Animação', '2003-05-30', '01:40:00', 'Albert Brooks, Ellen DeGeneres', 'Finding Nemo', 'DVD', 'Andrew Stanton', 'L', 'Um pai atravessa o oceano para resgatar o filho desaparecido'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 27);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 28, 'Animação', '2001-07-20', '02:05:00', 'Rumi Hiiragi, Miyu Irino', 'Spirited Away', 'Blu-ray', 'Hayao Miyazaki', 'L', 'Uma menina entra num mundo mágico para salvar os pais enfeitiçados'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 28);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 29, 'Animação', '1994-06-24', '01:28:00', 'Matthew Broderick, James Earl Jones', 'The Lion King', 'Blu-ray', 'Roger Allers & Rob Minkoff', 'L', 'Um jovem leão aprende seu lugar no ciclo da vida'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 29);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 30, 'Animação', '2009-05-29', '01:36:00', 'Ed Asner, Jordan Nagai', 'Up', 'DVD', 'Pete Docter & Bob Peterson', 'L', 'Um idoso e um garoto voam em casa com balões rumo a uma aventura'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 30);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 31, 'Animação', '2017-11-22', '01:45:00', 'Anthony Gonzalez, Gael García Bernal', 'Coco', 'Blu-ray', 'Lee Unkrich & Adrian Molina', 'L', 'Um garoto visita a Terra dos Mortos para entender sua família e música'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 31);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 32, 'Animação', '2015-06-19', '01:35:00', 'Amy Poehler, Phyllis Smith', 'Inside Out', 'Blu-ray', 'Pete Docter', 'L', 'As emoções de uma garota enfrentam mudanças e aprendem a cooperar'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 32);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 33, 'Animação', '2004-11-05', '01:55:00', 'Craig T. Nelson, Holly Hunter', 'The Incredibles', 'DVD', 'Brad Bird', 'L', 'Uma família de super-heróis tenta viver anonimamente até a próxima missão'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 33);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 34, 'Animação', '2008-06-27', '01:38:00', 'Ben Burtt, Elissa Knight', 'WALL·E', 'Blu-ray', 'Andrew Stanton', 'L', 'Um robô compactador encontra amor e esperança no espaço'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 34);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 35, 'Suspense', '1991-02-14', '01:58:00', 'Jodie Foster, Anthony Hopkins', 'The Silence of the Lambs', 'Blu-ray', 'Jonathan Demme', '+16', 'Uma agente busca ajuda de um assassino preso para capturar outro criminoso'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 35);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 36, 'Crime', '1995-09-22', '02:07:00', 'Brad Pitt, Morgan Freeman', 'Se7en', 'DVD', 'David Fincher', '+16', 'Dois detetives caçam um serial killer obcecado pelos pecados capitais'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 36);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 37, 'Suspense', '1995-08-16', '01:46:00', 'Kevin Spacey, Gabriel Byrne', 'The Usual Suspects', 'DVD', 'Bryan Singer', '+16', 'Criminosos reunidos em um golpe descobrem que nada é o que parece'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 37);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 38, 'Crime', '1990-09-19', '02:26:00', 'Ray Liotta, Robert De Niro', 'Goodfellas', 'Blu-ray', 'Martin Scorsese', '+16', 'Ascensão e queda de um mafioso ao longo de décadas'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 38);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 39, 'Crime', '2006-10-06', '02:31:00', 'Leonardo DiCaprio, Matt Damon', 'The Departed', 'Blu-ray', 'Martin Scorsese', '+16', 'Polícia e máfia se infiltram uma na outra em um jogo mortal'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 39);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 40, 'Suspense', '2006-10-20', '02:10:00', 'Christian Bale, Hugh Jackman', 'The Prestige', 'DVD', 'Christopher Nolan', '+12', 'Rivais ilusionistas travam disputa que beira a obsessão'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 40);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 41, 'Suspense', '2000-10-11', '01:53:00', 'Guy Pearce, Carrie-Anne Moss', 'Memento', 'DVD', 'Christopher Nolan', '+14', 'Um homem com amnésia recente busca o assassino da esposa usando pistas'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 41);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 42, 'Drama', '1999-12-10', '03:09:00', 'Tom Hanks, Michael Clarke Duncan', 'The Green Mile', 'Blu-ray', 'Frank Darabont', '+14', 'Guardas presenciam eventos misteriosos no corredor da morte'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 42);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 43, 'Guerra', '1998-07-24', '02:49:00', 'Tom Hanks, Matt Damon', 'Saving Private Ryan', 'Blu-ray', 'Steven Spielberg', '+16', 'Um pelotão cruza a França ocupada para resgatar um único soldado'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 43);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 44, 'Drama', '1993-12-15', '03:15:00', 'Liam Neeson, Ben Kingsley', 'Schindler''s List', 'DVD', 'Steven Spielberg', '+14', 'Um industrial salva judeus durante o Holocausto à custa de tudo que tem'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 44);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 45, 'Guerra', '1995-05-24', '02:58:00', 'Mel Gibson, Sophie Marceau', 'Braveheart', 'DVD', 'Mel Gibson', '+16', 'Um guerreiro escocês lidera a luta por liberdade contra a opressão'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 45);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 46, 'Guerra', '2017-07-21', '01:46:00', 'Fionn Whitehead, Harry Styles', 'Dunkirk', 'Blu-ray', 'Christopher Nolan', '+12', 'Soldados cercados buscam evacuação em três frentes durante a guerra'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 46);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '1', 47, 'Guerra', '2019-12-25', '01:59:00', 'George MacKay, Dean-Charles Chapman', '1917', 'Blu-ray', 'Sam Mendes', '+14', 'Dois soldados correm contra o tempo para entregar uma mensagem vital'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 47);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '2', 48, 'Drama', '2015-12-25', '02:36:00', 'Leonardo DiCaprio, Tom Hardy', 'The Revenant', 'Blu-ray', 'Alejandro G. Iñárritu', '+16', 'Após ser deixado para morrer, um explorador busca sobreviver e se vingar'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 48);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '3', 49, 'Crime', '2007-11-21', '02:02:00', 'Tommy Lee Jones, Javier Bardem', 'No Country for Old Men', 'DVD', 'Joel Coen & Ethan Coen', '+16', 'Um caçador encontra dinheiro e é perseguido por um assassino implacável'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 49);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '4', 50, 'Comédia', '2014-03-28', '01:39:00', 'Ralph Fiennes, Tony Revolori', 'The Grand Budapest Hotel', 'Blu-ray', 'Wes Anderson', '+12', 'Um concierge e um mensageiro se envolvem em herança e aventura'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 50);
+
+INSERT INTO filme (estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
+SELECT '5', 51, 'Romance', '2013-11-20', '02:06:00', 'Joaquin Phoenix, Scarlett Johansson', 'Her', 'Digital', 'Spike Jonze', '+14', 'Um homem solitário se apaixona por um sistema operacional inteligente'
+WHERE NOT EXISTS (SELECT 1 FROM filme WHERE id_filme = 51);
 
 -- Inserir funcionário de exemplo
 INSERT INTO funcionario (idade_funcionario, nome_funcionario, salario_funcionario, turno_funcionario, cargo_funcionario, sexo_funcionario, cpf_funcionario, email_funcionario)
