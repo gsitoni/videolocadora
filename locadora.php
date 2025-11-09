@@ -69,7 +69,7 @@ $is_admin = $_SESSION['is_admin'] ?? false;
                         <div class="filme-card">
                             <div class="filme-poster">
                                 <div class="poster-placeholder">
-                                    🎥
+                                    <img src="<?= htmlspecialchars($filme['imagem']) ?>" alt="<?php echo htmlspecialchars($filme['ident_titulo']); ?>">
                                 </div>
                             </div>
                             <div class="filme-info">
