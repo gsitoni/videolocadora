@@ -16,7 +16,7 @@ $usuario_logado = $_SESSION['usuario_logado']; // Username armazenado na sessão
 $nome_cliente = $_SESSION['nome_cliente'] ?? $usuario_logado; // Nome real; fallback para username se não definido.
 $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios administrativos.
 
-// (Opcional) Debug da sessão — descomente para inspecionar valores durante desenvolvimento.
+// Debug da sessão.
 // echo "<pre>DEBUG SESSION:\n"; // Início de bloco formatado.
 // var_dump([
 //     'usuario_logado' => $usuario_logado,
@@ -192,6 +192,6 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         </div>
     </footer>
 
-<script src="main.js"></script>
+<script src="main.js?v=<?php echo filemtime('main.js'); ?>"></script>
 </body>
 </html>

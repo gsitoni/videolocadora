@@ -1,6 +1,6 @@
 // Script resiliente para múltiplas páginas: só ativa recursos quando os elementos existem
 
-document.addEventListener('DOMContentLoaded', function () {
+function initScripts() {
     // Interação da barra de pesquisa (só se existir no DOM)
     const buscar = document.querySelector('.barra-de-busca');
     const AbrirLupa = document.querySelector('.lupa-busca');
@@ -20,7 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
             header.classList.toggle('rolagem', window.scrollY > 500);
         });
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScripts);
+} else {
+    // DOM já pronto
+    initScripts();
+}
 
 // Carrossel dos filmes em cartaz - função segura e exposta no escopo global
 (function attachCarousel() {
