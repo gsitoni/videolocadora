@@ -37,7 +37,7 @@ $result = $conn->query($sql);
             <?php while ($r = $result->fetch_assoc()): ?>
                 <li style="margin-bottom:10px;">
                     <?php if (!empty($r['imagem'])): ?>
-                        <img src="<?php echo htmlspecialchars($r['imagem']); ?>" alt="Poster" width="60" style="margin-right:8px;">
+                        <img class="poster-thumb" src="<?php echo htmlspecialchars($r['imagem']); ?>" alt="Poster">
                     <?php endif; ?>
                     <?php echo htmlspecialchars($r['ident_titulo']); ?>
                     <?php if (!empty($r['ident_data'])): ?>
