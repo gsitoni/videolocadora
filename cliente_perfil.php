@@ -11,11 +11,11 @@ $conn = include 'config.php';
 $idCliente = (int)($_SESSION['id_cliente'] ?? 0);
 $nome_cliente = $_SESSION['nome_cliente'] ?? $_SESSION['usuario_logado'];
 
-$sql = "SELECT f.ident_titulo, f.imagem, f.ident_data
-        FROM locacao l
-        INNER JOIN filme f ON f.id_filme = l.id_filme
-        WHERE l.id_cliente = $idCliente
-        ORDER BY l.id_locacao DESC";
+$sql = "SELECT f.ident_titulo, f.imagem, f.ident_data, l.data_cadastro_filme
+    FROM locacao l
+    INNER JOIN filme f ON f.id_filme = l.id_filme
+    WHERE l.id_cliente = $idCliente
+    ORDER BY l.id_locacao DESC";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@ $result = $conn->query($sql);
         <h1>Perfil do Cliente</h1>
         <p>Olá, <strong><?php echo htmlspecialchars($nome_cliente); ?></strong></p>
 
-        <h2>Filmes alugados</h2>
+    <h2>Histórico de Locações</h2>
         <?php if ($result && $result->num_rows > 0): ?>
             <ul>
             <?php while ($r = $result->fetch_assoc()): ?>
@@ -42,6 +42,9 @@ $result = $conn->query($sql);
                     <?php echo htmlspecialchars($r['ident_titulo']); ?>
                     <?php if (!empty($r['ident_data'])): ?>
                         (<?php echo date('Y', strtotime($r['ident_data'])); ?>)
+                    <?php endif; ?>
+                    <?php if (!empty($r['data_cadastro_filme'])): ?>
+                        <span class="meta-year"> • alugado em <?php echo date('d/m/Y', strtotime($r['data_cadastro_filme'])); ?></span>
                     <?php endif; ?>
                 </li>
             <?php endwhile; ?>
