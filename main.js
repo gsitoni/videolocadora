@@ -22,10 +22,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Carrossel dos filmes em cartaz - função segura para qualquer página
-function rolar(distancia) {
-    const carrossel = document.getElementById('carrossel');
-    if (carrossel && typeof carrossel.scrollBy === 'function') {
-        carrossel.scrollBy({ left: distancia, behavior: 'smooth' });
-    }
-}
+// Carrossel dos filmes em cartaz - função segura e exposta no escopo global
+(function attachCarousel() {
+    // expõe rolar no window para ser usado por onclick inline sem ReferenceError
+    window.rolar = function (distancia) {
+        const carrossel = document.getElementById('carrossel');
+        if (carrossel && typeof carrossel.scrollBy === 'function') {
+            carrossel.scrollBy({ left: distancia, behavior: 'smooth' });
+        } else {
+            // evita erro no console quando o elemento não existe nesta página
+            // opcional: console.debug('Carrossel não encontrado nesta página');
+        }
+    };
+})();
