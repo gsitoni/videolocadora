@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $telefone_cliente  = $conn->real_escape_string($_POST['telefone_cliente'] ?? '');
         $email_cliente     = $conn->real_escape_string($_POST['email_cliente'] ?? '');
         $username          = $conn->real_escape_string($_POST['username'] ?? '');
-        $password          = $conn->real_escape_string($_POST['password'] ?? ''); // (Melhoria futura: armazenar hash da senha)
+        $password          = $conn->real_escape_string($_POST['password'] ?? ''); 
         
         // Debug opcional do POST — descomentar para inspecionar dados recebidos.
         // echo "<pre>DEBUG POST: "; var_dump($_POST); echo "</pre>";

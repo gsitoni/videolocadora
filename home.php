@@ -48,8 +48,8 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
                     <li><a href="#filmes-section">Filmes</a></li>
                     <li><a href="locadora.php">Locação</a></li>
                     <li><a href="cliente_perfil.php">Perfil</a></li>
-                    <li><a href="#">Funcionários</a></li>
                     <?php if ($is_admin): ?>
+                    <li><a href="funcionarios.php">Funcionários</a></li>
                     <li><a href="index.php?page=usuarios">Clientes</a></li>
                     <?php endif; ?>
                     <li class="sair"><a href="index.php" onclick="return confirm('Deseja realmente sair?')">Sair</a></li>
@@ -192,6 +192,6 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         </div>
     </footer>
 
-<script src="main.js?v=<?php echo filemtime('main.js'); ?>"></script>
+<script src="main.js"></script>
 </body>
 </html>

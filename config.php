@@ -1,4 +1,4 @@
-<?php
+6<?php
 // Arquivo: config.php — cria e retorna a conexão com o MySQL (mysqli)
 
 // CONFIGURAÇÃO DO BANCO DE DADOS 

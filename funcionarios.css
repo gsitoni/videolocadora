@@ -1,0 +1,347 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    background-color: #b38153;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.box {
+    background: #F7EACF;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(193, 68, 24, 0.3);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    color: #C14418;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #6e3520;
+    font-size: 1.8em;
+    margin: 30px 0 20px;
+    padding-left: 15px;
+    border-left: 5px solid #C14418;
+}
+
+.badge {
+    background: linear-gradient(135deg, #f0a852 0%, #f7d793 100%);
+    color: #160a17;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    font-size: 0.95em;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(110, 53, 32, 0.2);
+}
+
+.badge strong {
+    color: #C14418;
+    font-weight: 600;
+}
+
+.msg {
+    background: #d7bfa0;
+    border-left: 4px solid #C14418;
+    color: #6e3520;
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Formulário */
+form.simple {
+    background: #d7bfa0;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    box-shadow: 0 4px 10px rgba(110, 53, 32, 0.2);
+}
+
+form.simple input,
+form.simple select {
+    padding: 12px 15px;
+    border: 2px solid #bf431abb;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: "Inter", sans-serif;
+    background: #F7EACF;
+    color: #160a17;
+    transition: all 0.3s ease;
+}
+
+form.simple input:focus,
+form.simple select:focus {
+    outline: none;
+    border-color: #C14418;
+    box-shadow: 0 0 0 3px rgba(193, 68, 24, 0.2);
+    transform: translateY(-2px);
+}
+
+form.simple select {
+    cursor: pointer;
+}
+
+form.simple button {
+    grid-column: 1 / -1;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #C14418 0%, #d7301f 100%);
+    color: #F7EACF;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(193, 68, 24, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+form.simple button:hover {
+    background: linear-gradient(135deg, #d7301f 0%, #C14418 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(193, 68, 24, 0.5);
+}
+
+form.simple button i {
+    font-size: 1.2em;
+}
+
+/* Ações do topo */
+.top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0 20px;
+    padding: 15px 0;
+    border-top: 2px solid #f0a852;
+    border-bottom: 2px solid #f0a852;
+}
+
+.top-actions a {
+    padding: 10px 25px;
+    background: #6e3520;
+    color: #F7EACF;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(110, 53, 32, 0.3);
+}
+
+.top-actions a:hover {
+    background: #bf431abb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(193, 68, 24, 0.4);
+}
+
+/* Tabela */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(110, 53, 32, 0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead {
+    background: linear-gradient(135deg, #C14418 0%, #d7301f 100%);
+    color: #F7EACF;
+}
+
+thead th {
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #d7bfa0;
+    transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+    background: linear-gradient(135deg, #f7d793 0%, #f0a852 100%);
+    transform: scale(1.01);
+}
+
+tbody td {
+    padding: 12px;
+    color: #160a17;
+    font-size: 0.95em;
+}
+
+tbody td:first-child {
+    font-weight: 600;
+    color: #C14418;
+}
+
+td.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+td.actions a {
+    padding: 6px 15px;
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+td.actions a:first-child {
+    background: #6e3520;
+    color: #F7EACF;
+}
+
+td.actions a:first-child:hover {
+    background: #bf431abb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(110, 53, 32, 0.3);
+}
+
+td.actions a:last-child {
+    background: #d7301f;
+    color: #F7EACF;
+}
+
+td.actions a:last-child:hover {
+    background: #C14418;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(193, 68, 24, 0.4);
+}
+
+/* Mensagem de tabela vazia */
+tbody tr td[colspan] {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6e3520;
+    font-style: italic;
+    font-size: 1.1em;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .box {
+        padding: 30px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    thead th,
+    tbody td {
+        padding: 10px 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .box {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    form.simple {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .top-actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .top-actions a {
+        text-align: center;
+    }
+
+    /* Tabela responsiva - scroll horizontal */
+    .table-wrapper {
+        margin: 20px -20px;
+        border-radius: 0;
+    }
+
+    table {
+        min-width: 800px;
+    }
+
+    td.actions {
+        flex-direction: column;
+    }
+
+    td.actions a {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6em;
+    }
+
+    form.simple input,
+    form.simple select,
+    form.simple button {
+        font-size: 0.95em;
+    }
+
+    .badge {
+        font-size: 0.85em;
+        padding: 8px 15px;
+    }
+}

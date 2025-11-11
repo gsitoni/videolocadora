@@ -38,7 +38,6 @@ if (document.readyState === 'loading') {
             carrossel.scrollBy({ left: distancia, behavior: 'smooth' });
         } else {
             // evita erro no console quando o elemento não existe nesta página
-            // opcional: console.debug('Carrossel não encontrado nesta página');
         }
     };
 })();
