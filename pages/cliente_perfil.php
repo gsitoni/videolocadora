@@ -2,11 +2,11 @@
 // Versão simples do perfil: lista os filmes alugados pelo cliente logado
 session_start();
 if (!isset($_SESSION['usuario_logado'])) {
-    header('Location: index.php?page=login');
+    header('Location: ../pages/index.php?page=login');
     exit;
 }
 
-$conn = include 'config.php';
+$conn = include '../config/config.php';
 
 $idCliente = (int)($_SESSION['id_cliente'] ?? 0);
 $nome_cliente = $_SESSION['nome_cliente'] ?? $_SESSION['usuario_logado'];
@@ -24,13 +24,12 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do Cliente</title>
-    <link rel="stylesheet" href="cliente_perfil.css">
+    <link rel="stylesheet" href="../css/cliente_perfil.css">
     </head>
 <body>
     <div class="box">
-        <h1>Perfil do Cliente</h1>
-        <p>Olá, <strong><?php echo htmlspecialchars($nome_cliente); ?></strong></p>
-
+    <h1>Perfil do Cliente</h1>
+    <p>Olá, <strong><?php echo htmlspecialchars($nome_cliente); ?></strong></p>
     <h2>Histórico de Locações</h2>
         <?php if ($result && $result->num_rows > 0): ?>
             <ul>
@@ -54,8 +53,8 @@ $result = $conn->query($sql);
         <?php endif; ?>
 
         <div class="actions">
-            <a href="home.php">← Voltar</a>
-            <a href="locadora.php">Catálogo</a>
+            <a href="../pages/home.php">← Voltar</a>
+            <a href="../pages/locadora.php">Catálogo</a>
         </div>
     </div>
 

@@ -5,12 +5,12 @@ session_start(); // Inicia a sessão PHP para persistir dados entre requisiçõe
 
 // Verificar se o usuário está logado (protege a rota)
 if (!isset($_SESSION['usuario_logado'])) { // Se não existe a chave 'usuario_logado' na sessão
-    header('Location: index.php?page=login'); // Redireciona para a página de login (deve ser chamado antes de enviar HTML)
+    header('Location: ../pages/index.php?page=login'); // Redireciona para a página de login (deve ser chamado antes de enviar HTML)
     exit; // Interrompe a execução para garantir que nada mais será processado após o redirect
 }
 
 // Abre conexão com o banco de dados; config.php retorna um objeto mysqli em $conn
-$conn = include 'config.php'; // include carrega e executa config.php; o return desse arquivo vira o valor de $conn
+$conn = include '../config/config.php'; // include carrega e executa config.php; o return desse arquivo vira o valor de $conn
 
 // Monta a consulta para buscar todos os filmes ordenados por título
 $query = "SELECT * FROM filme ORDER BY ident_titulo"; // string SQL simples sem parâmetros (apenas leitura)
@@ -27,7 +27,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clube da Fita - Locadora</title>
-    <link rel="stylesheet" href="locadora.css">
+    <link rel="stylesheet" href="../css/locadora.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -35,7 +35,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
     <header class="header-locadora">
         <div class="container-header">
             <div class="logo-area">
-                <img src="logo_site.png" alt="Logo Clube da Fita" class="logo-locadora">
+                <img src="../img/logo_site.png" alt="Logo Clube da Fita" class="logo-locadora">
                 <h1>Clube da Fita</h1>
             </div>
             <nav class="nav-locadora">
@@ -43,8 +43,8 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
                 <?php if ($is_admin): ?>
                     <span class="badge-admin-nav">ADMIN</span>
                 <?php endif; ?>
-                <a href="home.php" class="btn-voltar-home">← Voltar</a>
-                <a href="cliente_perfil.php" class="btn-voltar-home">Perfil</a>
+                <a href="../pages/home.php" class="btn-voltar-home">← Voltar</a>
+                <a href="../pages/cliente_perfil.php" class="btn-voltar-home">Perfil</a>
             </nav>
         </div>
     </header>
@@ -139,10 +139,10 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
             </div>
             <div class="footer-col">
                 <h4>Links Rápidos</h4>
-                <a href="home.php">Dashboard</a>
-                <a href="cliente_perfil.php">Perfil do Cliente</a>
+                <a href="../pages/home.php">Dashboard</a>
+                <a href="../pages/cliente_perfil.php">Perfil do Cliente</a>
                 <?php if ($is_admin): ?>
-                    <a href="index.php?page=usuarios">Clientes</a>
+                    <a href="../pages/index.php?page=usuarios">Clientes</a>
                 <?php endif; ?>
             </div>
             <div class="footer-col">

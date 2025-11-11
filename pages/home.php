@@ -7,7 +7,7 @@ session_start(); // Inicia/retoma a sessão para acessar variáveis de controle 
 
 // Autorização: se não há usuário logado na sessão, redireciona para página inicial (login/cadastro).
 if (!isset($_SESSION['usuario_logado'])) {
-    header('Location: index.php'); // Redireciona antes de qualquer saída HTML.
+    header('Location: ../pages/index.php'); // Redireciona antes de qualquer saída HTML.
     exit; // Interrompe execução para evitar que o restante do conteúdo seja enviado.
 }
 
@@ -16,7 +16,7 @@ $usuario_logado = $_SESSION['usuario_logado']; // Username armazenado na sessão
 $nome_cliente = $_SESSION['nome_cliente'] ?? $usuario_logado; // Nome real; fallback para username se não definido.
 $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios administrativos.
 
-// Debug da sessão.
+// (Opcional) Debug da sessão — descomente para inspecionar valores durante desenvolvimento.
 // echo "<pre>DEBUG SESSION:\n"; // Início de bloco formatado.
 // var_dump([
 //     'usuario_logado' => $usuario_logado,
@@ -31,7 +31,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Clube da Fita</title>
-     <link rel="stylesheet" href="home.css">
+     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
@@ -41,18 +41,18 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
 <header id="header">
     <div class="container">
         <div class="flex">
-            <img class="logotipo-imagem" src="logo_site.png" alt="Logotipo do site mostrando uma imagem de uma fita cassete.">
+            <img class="logotipo-imagem" src="../img/logo_site.png" alt="Logotipo do site mostrando uma imagem de uma fita cassete.">
             <nav class="itens-do-menu">
                 <ul>
-                    <li><a href="#">Home</a></li>
+                    <li><a href="../pages/home.php">Home</a></li>
                     <li><a href="#filmes-section">Filmes</a></li>
-                    <li><a href="locadora.php">Locação</a></li>
-                    <li><a href="cliente_perfil.php">Perfil</a></li>
+                    <li><a href="../pages/locadora.php">Locação</a></li>
+                    <li><a href="../pages/cliente_perfil.php">Perfil</a></li>
+                    <li><a href="../pages/funcionarios.php">Funcionários</a></li>
                     <?php if ($is_admin): ?>
-                    <li><a href="funcionarios.php">Funcionários</a></li>
-                    <li><a href="index.php?page=usuarios">Clientes</a></li>
+                    <li><a href="../pages/index.php?page=usuarios">Clientes</a></li>
                     <?php endif; ?>
-                    <li class="sair"><a href="index.php" onclick="return confirm('Deseja realmente sair?')">Sair</a></li>
+                    <li class="sair"><a href="../pages/index.php" onclick="return confirm('Deseja realmente sair?')">Sair</a></li>
                 </ul>
             </nav>
             <div class="barra-de-busca">
@@ -77,7 +77,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         <?php endif; ?>
     </div>
 
-    <section class="banner">
+    <section style="background-image: url(../img/download5.jpg);" class="banner">
         <div class="banner-overlay">
         </div>
     </section>
@@ -97,22 +97,22 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         <h2>Destaques da Semana</h2>
         <div class="filmes-container" id="carrossel">
             <div class="card-filme">
-                <img class="img-poster" src="poster-1.jpg" alt="Poster do filme">
+                <img class="img-poster" src="../img/poster-1.jpg" alt="Poster do filme">
                 <h3>Nome do filme</h3>
                 <p>Descrição simples do filme...</p>
             </div>
             <div class="card-filme">
-                <img class="img-poster" src="poster-2.jpg" alt="Poster do filme">
+                <img class="img-poster" src="../img/poster-2.jpg" alt="Poster do filme">
                 <h3>Nome do filme</h3>
                 <p>Descrição simples do filme...</p>
             </div>
             <div class="card-filme">
-                <img class="img-poster" src="poster-3.jpg" alt="Poster do filme">
+                <img class="img-poster" src="../img/poster-3.jpg" alt="Poster do filme">
                 <h3>Nome do filme</h3>
                 <p>Descrição simples do filme...</p>
             </div>
             <div class="card-filme">
-                <img class="img-poster" src="poster-4.jpg" alt="Poster do filme">
+                <img class="img-poster" src="../img/poster-4.jpg" alt="Poster do filme">
                 <h3>Nome do filme</h3>
                 <p>Descrição simples do filme...</p>
             </div>
@@ -179,10 +179,10 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         </div>
         <div>
             <h4>Links Rápidos:</h4>
-            <p><a href="home.php">Dashboard</a></p>
-            <p><a href="locadora.php">Catálogo</a></p>
-            <p><a href="cliente_perfil.php">Perfil do Cliente</a></p>
-            <p><a href="index.html">Página Inicial</a></p>
+            <p><a href="../pages/home.php">Dashboard</a></p>
+            <p><a href="../pages/locadora.php">Catálogo</a></p>
+            <p><a href="../pages/cliente_perfil.php">Perfil do Cliente</a></p>
+            <p><a href="../pages/index.html">Página Inicial</a></p>
         </div>
         <div>
             <h4>Contato:</h4>
@@ -192,6 +192,6 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         </div>
     </footer>
 
-<script src="main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

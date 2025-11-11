@@ -1,3 +1,6 @@
+body.cadastro, body.login {
+    background: url('../img/download14.jpg') center/cover no-repeat fixed;
+}
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +16,7 @@ body {
     padding: 20px;
     position: relative;
     overflow-x: hidden;
-    background: url('download14.jpg') center/cover no-repeat fixed;
+    background: url('img/download14.jpg') center/cover no-repeat fixed;
 }
 
 body::before {
@@ -408,36 +411,64 @@ legend::before {
     to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* ===== Responsividade ===== */
-@media (max-width: 992px) {
-    .home-container, .form-container { max-width: 500px; }
-    fieldset { padding: 32px 28px; }
+/* ==== RESPONSIVIDADE ==== */
+@media (max-width: 900px) {
+  .usuarios-container {
+    max-width: 98vw;
+    padding: 20px;
+  }
+  .home-container, .form-container {
+    max-width: 98vw;
+    padding: 30px 10px;
+  }
 }
 
-@media (max-width: 768px) {
-    body { padding: 14px; }
-    .home-container { padding: 38px 28px; }
-    .home-container h1 { font-size: 24px; }
-    fieldset { padding: 30px 24px; }
-    legend { font-size: 22px; }
-    .form-box input { padding: 14px 16px; font-size: 14px; }
-    .btn-cadastro, .btn-login { padding: 14px 20px; font-size: 14px; }
-    .usuarios-container { padding: 32px 24px; }
-    .usuario-card { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .usuario-avatar { margin-right: 0; }
-    .usuarios-stats { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-}
-
-@media (max-width: 520px) {
-    .home-container, .form-container { padding: 30px 20px; }
-    .home-container h1 { font-size: 21px; }
-    legend { font-size: 20px; }
-    .btn-link { padding: 14px 22px; font-size: 14px; }
-    .usuarios-container { padding: 28px 18px; }
-    .usuario-info p { font-size: 12px; }
-}
-
-@media (max-width: 400px) {
-    .btn-link, .btn-cadastro, .btn-login { padding: 12px 18px; font-size: 13px; }
-    .home-container { padding: 26px 16px; }
+@media (max-width: 600px) {
+  body {
+    padding: 5px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .home-container, .form-container, .usuarios-container {
+    padding: 10px 2vw;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  }
+  fieldset {
+    padding: 20px 5px;
+  }
+  .usuarios-header h1, .home-container h1 {
+    font-size: 22px;
+  }
+  .stat-card {
+    padding: 10px;
+    font-size: 15px;
+  }
+  .usuario-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .usuario-avatar {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .usuarios-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-link, .btn-voltar, .btn-cadastro-link {
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+  .info-box {
+    padding: 10px;
+    font-size: 13px;
+  }
+  .mensagem {
+    top: 10px;
+    font-size: 13px;
+    padding: 10px 5px;
+  }
 }

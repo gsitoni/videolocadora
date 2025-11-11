@@ -1,3 +1,6 @@
+body.clientes {
+    background: #2c3a2c url('../img/download14.jpg') center/cover no-repeat fixed;
+}
 * {
     margin: 0;
     padding: 0;

@@ -1,4 +1,6 @@
 <?php
+// Página simples (iniciante) de CRUD de Funcionários
+// Requisitos: estar logado como admin
 
 session_start();
 if (!isset($_SESSION['usuario_logado']) || !($_SESSION['is_admin'] ?? false)) {
@@ -6,7 +8,7 @@ if (!isset($_SESSION['usuario_logado']) || !($_SESSION['is_admin'] ?? false)) {
     exit;
 }
 
-$conn = include 'config.php';
+    $conn = include '../config/config.php';
 
 $mensagem = '';
 
@@ -64,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         email_funcionario = '$email'
                       WHERE id_funcionario = $id";
             if ($conn->query($update)) {
-                header('Location: funcionarios.php?msg=editado');
+                header('Location: ../pages/funcionarios.php?msg=editado');
                 exit;
             } else {
                 $mensagem = 'Erro ao editar: ' . $conn->error;
@@ -97,7 +99,7 @@ $lista = $conn->query("SELECT * FROM funcionario ORDER BY id_funcionario DESC");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Funcionários</title>
-    <link rel="stylesheet" href="funcionarios.css">
+    <link rel="stylesheet" href="../css/funcionarios.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script>
         function confirmarDel(nome) {
@@ -105,7 +107,7 @@ $lista = $conn->query("SELECT * FROM funcionario ORDER BY id_funcionario DESC");
         }
     </script>
     </head>
-<body>
+<body class="clientes">
     <div class="box">
         <h1>Admin - Funcionários</h1>
         <p class="badge">Você está logado como <strong><?php echo htmlspecialchars($_SESSION['usuario_logado']); ?></strong> (ADMIN)</p>
@@ -146,7 +148,7 @@ $lista = $conn->query("SELECT * FROM funcionario ORDER BY id_funcionario DESC");
         <!-- Lista simples de funcionários -->
         <div class="top-actions">
             <span class="badge">Total: <?php echo (int)($lista ? $lista->num_rows : 0); ?></span>
-            <a href="home.php">← Voltar</a>
+            <a href="../pages/home.php">← Voltar</a>
         </div>
 
     <div class="table-wrapper">
@@ -177,8 +179,8 @@ $lista = $conn->query("SELECT * FROM funcionario ORDER BY id_funcionario DESC");
                             <td><?php echo htmlspecialchars($f['cpf_funcionario']); ?></td>
                             <td><?php echo htmlspecialchars($f['email_funcionario']); ?></td>
                             <td class="actions">
-                                <a href="funcionarios.php?action=edit&id=<?php echo (int)$f['id_funcionario']; ?>">Editar</a>
-                                <a href="funcionarios.php?action=delete&id=<?php echo (int)$f['id_funcionario']; ?>" onclick="return confirmarDel(<?php echo json_encode($f['nome_funcionario']); ?>)">Remover</a>
+                                <a href="../pages/funcionarios.php?action=edit&id=<?php echo (int)$f['id_funcionario']; ?>">Editar</a>
+                                <a href="../pages/funcionarios.php?action=delete&id=<?php echo (int)$f['id_funcionario']; ?>" onclick="return confirmarDel(<?php echo json_encode($f['nome_funcionario']); ?>)">Remover</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
