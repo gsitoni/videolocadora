@@ -1,5 +1,5 @@
 <?php
-// Arquivo: locadora.php — renderiza o catálogo de filmes para usuários autenticados
+// Arquivo: catalogo.php — renderiza o catálogo de filmes para usuários autenticados
 
 session_start(); // Inicia a sessão PHP para persistir dados entre requisições (ex.: login)
 
@@ -26,19 +26,19 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clube da Fita - Locadora</title>
-    <link rel="stylesheet" href="../css/locadora.css">
+    <title>Clube da Fita - Catálogo</title>
+    <link rel="stylesheet" href="../css/catalogo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
     <!-- Header -->
-    <header class="header-locadora">
+    <header class="header-catalogo">
         <div class="container-header">
             <div class="logo-area">
-                <img src="../img/logo_site.png" alt="Logo Clube da Fita" class="logo-locadora">
+                <img src="../img/logo_site.png" alt="Logo Clube da Fita" class="logo-catalogo">
                 <h1>Clube da Fita</h1>
             </div>
-            <nav class="nav-locadora">
+            <nav class="nav-catalogo">
                 <span class="usuario-info">👤 <?php echo htmlspecialchars($nome_cliente); ?></span>
                 <?php if ($is_admin): ?>
                     <span class="badge-admin-nav">ADMIN</span>

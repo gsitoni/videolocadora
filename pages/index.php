@@ -8,7 +8,7 @@ session_start(); // Inicia sessão para armazenar dados de autenticação e esta
 $page = $_GET['page'] ?? 'home'; // Página alvo; se não vier definida, cairá em 'home'.
 
 // Conectar ao banco de dados: include retorna o objeto mysqli definido em config.php.
-$conn = include '../config/config.php'; // Mantém uma única conexão para todo o processamento desta requisição.
+$conn = include __DIR__ . '/../config/config.php'; // Mantém uma única conexão para todo o processamento desta requisição.
 
 $mensagem = ""; // Armazena feedback (sucesso/erro) a ser exibido ao usuário.
 $acesso_negado = false; // Flag para bloquear exibição de conteúdo administrativo.
@@ -37,7 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $telefone_cliente  = $conn->real_escape_string($_POST['telefone_cliente'] ?? '');
         $email_cliente     = $conn->real_escape_string($_POST['email_cliente'] ?? '');
         $username          = $conn->real_escape_string($_POST['username'] ?? '');
-        $password          = $conn->real_escape_string($_POST['password'] ?? ''); // (Melhoria futura: armazenar hash da senha)
+        $password          = $conn->real_escape_string($_POST['password'] ?? '');
+        $password_hash     = hash('sha256', $password); // Cria o hash da senha usando SHA-256 antes de salvar
+
         
         // Debug opcional do POST — descomentar para inspecionar dados recebidos.
         // echo "<pre>DEBUG POST: "; var_dump($_POST); echo "</pre>";
@@ -55,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else {
                 // Monta inserção do novo cliente (melhoria: prepared statements + hashing de senha).
                 $insert_query = "INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password) 
-                                VALUES ('$nome_cliente', '$cpf_cliente', '$idade_cliente', '$telefone_cliente', '$email_cliente', '$username', '$password')";
+                                VALUES ('$nome_cliente', '$cpf_cliente', '$idade_cliente', '$telefone_cliente', '$email_cliente', '$username', '$password_hash')";
                 
                 // echo "<pre>DEBUG INSERT: "; var_dump($insert_query); echo "</pre>"; // Descomente para ver SQL gerado.
 
@@ -73,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } elseif ($page === 'login') {
         $username = $conn->real_escape_string($_POST['username'] ?? ''); // Sanitiza entrada de usuário.
         $password = $conn->real_escape_string($_POST['password'] ?? ''); // Sanitiza senha (texto simples; melhorar para hash).
+        $password_hash = hash('sha256', $password); // Converte a senha para um hash - SHA256
         
         if (!empty($username) && !empty($password)) { // Validação mínima.
             $login_query = "SELECT * FROM cliente WHERE username = '$username'"; // Consulta dados do usuário.
@@ -82,7 +85,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $cliente = $result->fetch_assoc(); // Transforma linha em array associativo.
                 // echo "<pre>DEBUG LOGIN FETCH: "; var_dump($cliente); echo "</pre>"; // Debug opcional.
                 
-                if ($cliente['password'] === $password) { // Comparação direta (melhoria: usar password_verify com hash).
+                $password_hash = hash('sha256', $password); // Gera hash SHA-256 da senha digitada.
+
+                if ($cliente['password'] === $password_hash) { // Compara o hash gerado com o hash armazenado no banco.
                     // Armazena dados principais na sessão para uso em outras páginas.
                     $_SESSION['usuario_logado'] = $cliente['username'];
                     $_SESSION['nome_cliente']   = $cliente['nome_cliente'];
@@ -103,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fluxo de logout.
     } elseif ($page === 'logout') {
         session_destroy(); // Remove todos os dados da sessão (deslogar).
-        header('Location: ../pages/index.html'); // Redireciona para página estática inicial.
+        header('Location: index.html'); // Redireciona para página estática inicial.
         exit; // Garante término da execução.
     }
 }
@@ -156,13 +161,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
                 
                 <?php if (!isset($_SESSION['usuario_logado'])): ?> <!-- Visitante: mostra botões cadastro/login -->
-                    <a href="../pages/index.php?page=cadastro" class="btn-link">Fazer Cadastro</a>
-                    <a href="../pages/index.php?page=login" class="btn-link">Fazer Login</a>
+                    <a href="index.php?page=cadastro" class="btn-link">Fazer Cadastro</a>
+                    <a href="index.php?page=login" class="btn-link">Fazer Login</a>
                 <?php else: ?>
                     <?php if ($_SESSION['is_admin']): ?> <!-- Link extra para lista de usuários se admin -->
-                        <a href="../pages/index.php?page=usuarios" class="btn-link">Ver Clientes</a> <!-- Navega para área administrativa -->
+                        <a href="index.php?page=usuarios" class="btn-link">Ver Clientes</a> <!-- Navega para área administrativa -->
                     <?php endif; ?>
-                    <form method="POST" action="../pages/index.php?page=logout" style="width: 100%;">
+                    <form method="POST" action="index.php?page=logout" style="width: 100%;">
                         <button type="submit" class="btn-link" style="width: 100%; border: none; cursor: pointer;">Sair</button> <!-- Botão de logout usando formulário POST -->
                     </form>
                 <?php endif; ?>
@@ -240,8 +245,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         Já tem conta? <a href="index.php?page=login">Fazer Login</a>
                     </p>
                     
-                    <a href="../pages/index.php" class="btn-home">← Área de Login</a>
-                    <a href="../pages/index.html" class="btn-home-site">← Voltar ao Site</a>
+                    <a href="index.php" class="btn-home">← Área de Login</a>
+                    <a href="index.html" class="btn-home-site">← Voltar ao Site</a>
                 </div>
             </fieldset>
         </form>
@@ -267,11 +272,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <button type="submit" class="btn-login">Entrar</button>
                     
                     <p class="link-nav">
-                        Ainda não tem conta? <a href="../pages/index.php?page=cadastro">Cadastre-se aqui</a>
+                        Ainda não tem conta? <a href="index.php?page=cadastro">Cadastre-se aqui</a>
                     </p>
                     
-                    <a href="../pages/index.php" class="btn-home">← Área de Login</a>
-                    <a href="../pages/index.html" class="btn-home-site">← Voltar ao Site</a>
+                    <a href="index.php" class="btn-home">← Área de Login</a>
+                    <a href="index.html" class="btn-home-site">← Voltar ao Site</a>
                 </div>
             </fieldset>
         </form>
@@ -286,9 +291,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <p>Apenas administradores podem visualizar a lista de clientes.</p>
                 </div>
                 <div class="buttons-container">
-                    <a href="../pages/index.php" class="btn-link">← Voltar ao Início</a>
+                    <a href="index.php" class="btn-link">← Voltar ao Início</a>
                     <?php if (!isset($_SESSION['usuario_logado'])): ?>
-                        <a href="../pages/index.php?page=login" class="btn-link">Fazer Login</a>
+                        <a href="index.php?page=login" class="btn-link">Fazer Login</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -307,7 +312,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($clientes_result->num_rows == 0): ?>
                     <div class="usuarios-vazio">
                         <p>Nenhum cliente cadastrado ainda.</p>
-                        <a href="../pages/index.php?page=cadastro" class="btn-link">Fazer primeiro cadastro</a>
+                        <a href="index.php?page=cadastro" class="btn-link">Fazer primeiro cadastro</a>
                     </div>
                 <?php else: ?>
                     <div class="usuarios-stats">
@@ -356,8 +361,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
                 
                 <div class="usuarios-actions">
-                    <a href="../pages/index.php" class="btn-voltar">← Página Principal</a>
-                    <a href="../pages/index.php?page=cadastro" class="btn-cadastro-link">+ Novo Cliente</a>
+                    <a href="index.php" class="btn-voltar">← Página Principal</a>
+                    <a href="index.php?page=cadastro" class="btn-cadastro-link">+ Novo Cliente</a>
                 </div>
             </div>
         <?php endif; ?>
@@ -367,5 +372,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </body>
 </html>
 <?php
-$conn->close(); // Fecha a conexão com o banco liberando recursos.
+if ($conn && $conn instanceof mysqli) {
+    $conn->close(); // Fecha a conexão com o banco liberando recursos.
+}
 ?>

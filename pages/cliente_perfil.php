@@ -54,7 +54,7 @@ $result = $conn->query($sql);
 
         <div class="actions">
             <a href="../pages/home.php">← Voltar</a>
-            <a href="../pages/locadora.php">Catálogo</a>
+            <a href="../pages/catalogo.php">Catálogo</a>
         </div>
     </div>
 

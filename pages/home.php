@@ -46,7 +46,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
                 <ul>
                     <li><a href="../pages/home.php">Home</a></li>
                     <li><a href="#filmes-section">Filmes</a></li>
-                    <li><a href="../pages/locadora.php">Locação</a></li>
+                    <li><a href="../pages/catalogo.php">Catálogo</a></li>
                     <li><a href="../pages/cliente_perfil.php">Perfil</a></li>
                     <li><a href="../pages/funcionarios.php">Funcionários</a></li>
                     <?php if ($is_admin): ?>
@@ -180,7 +180,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         <div>
             <h4>Links Rápidos:</h4>
             <p><a href="../pages/home.php">Dashboard</a></p>
-            <p><a href="../pages/locadora.php">Catálogo</a></p>
+            <p><a href="../pages/catalogo.php">Catálogo</a></p>
             <p><a href="../pages/cliente_perfil.php">Perfil do Cliente</a></p>
             <p><a href="../pages/index.html">Página Inicial</a></p>
         </div>

@@ -1,4 +1,4 @@
-/*ESTILOS DA PÁGINA LOCADORA*/
+/*ESTILOS DA PÁGINA catalogo*/
 
 * {
     margin: 0;
@@ -14,7 +14,7 @@ body {
 }
 
 /* ==== HEADER ==== */
-.header-locadora {
+.header-catalogo {
     background: linear-gradient(135deg, #34403d 0%, #2a332f 100%);
     padding: 20px 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -40,7 +40,7 @@ body {
     gap: 15px;
 }
 
-.logo-locadora {
+.logo-catalogo {
     width: 60px;
     height: 60px;
     border-radius: 10px;
@@ -55,7 +55,7 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.nav-locadora {
+.nav-catalogo {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -96,7 +96,7 @@ body {
 }
 
 /* ==== BANNER ==== */
-.banner-locadora {
+.banner-catalogo {
     background: linear-gradient(135deg, #c77a4a 0%, #a85a32 100%);
     padding: 60px 20px;
     text-align: center;
@@ -333,7 +333,7 @@ body {
 }
 
 /* ==== FOOTER ==== */
-.footer-locadora {
+.footer-catalogo {
     background: linear-gradient(135deg, #2a332f 0%, #34403d 100%);
     padding: 40px 20px 20px;
     border-top: 3px solid #c77a4a;
@@ -393,17 +393,17 @@ body {
 }
 
 @media (max-width: 600px) {
-  .header-locadora, .footer-locadora {
+  .header-catalogo, .footer-catalogo {
     padding: 10px 2px;
   }
-  .logo-locadora {
+  .logo-catalogo {
     width: 40px;
     height: 40px;
   }
-  .nav-locadora {
+  .nav-catalogo {
     gap: 8px;
   }
-  .banner-locadora {
+  .banner-catalogo {
     padding: 20px 5px;
   }
   .container-catalogo h2 {
