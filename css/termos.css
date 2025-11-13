@@ -1,0 +1,12 @@
+/* Estilos para a página de termos */
+
+body.termos { display: block; background: #1a1a1a; color: #f5e6d3; padding: 0 16px 40px; }
+.terms-container { background: rgba(52,64,49,0.96); padding: 30px; border-radius: 14px; border: 2px solid rgba(139,116,78,0.5); max-width: 980px; margin: 0 auto 40px; color: #efe7d7; }
+.terms-title { font-size: 20px; color: #f5e6d3; margin-bottom: 8px; font-weight: 700; }
+.terms-section p, .terms-section li { color: #d4c5b0; line-height: 1.7; font-size: 15px; }
+.terms-section ul { margin: 8px 0 0 20px; }
+.terms-note { margin-top: 16px; font-size: 13px; color: #b8a998; }
+
+@media (max-width: 600px) { .terms-container { padding: 18px; } .terms-title { font-size: 18px; } }
+
+@media print { body { background: #fff; color: #000; } .header-locadora, .banner-locadora, .footer-locadora { display: none !important; } .terms-container { background: transparent; box-shadow: none; border: none; color: #000; } }

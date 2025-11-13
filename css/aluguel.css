@@ -1,0 +1,201 @@
+:root {
+    /* Cores atualizadas para tons de Bege/Marrom */
+    --cor-principal: #C14418; /* Marrom Avermelhado (Destaque Principal, substitui o Vermelho) */
+    --cor-fundo: #fbcd7d;     /* Bege Principal (Fundo da página) */
+    --cor-texto: #160a17b6;   /* Marrom Escuro (Texto principal em fundos claros) */
+    --cor-secundaria: #303030; /* Fundo Escuro (Cabeçalho/Rodapé, mantido para contraste) */
+    --cor-card-fundo: #F7EACF; /* Bege Claro (Fundo do Card de Detalhes) */
+    --cor-preco: #46d369;     /* Verde para Preço (Mantido para ser atrativo) */
+    --cor-voltar-hover: #e0b468; /* Variação mais escura do bege para hover */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--cor-fundo);
+    /* O corpo usa a cor de fundo bege, mas a cor do texto deve ser escura para legibilidade */
+    color: var(--cor-texto); 
+    line-height: 1.6;
+}
+
+/* --- Cabeçalho e Rodapé --- */
+
+.header, .footer {
+    /* Mantido escuro para contraste com o fundo da página */
+    background-color: var(--cor-secundaria); 
+    padding: 15px 5%;
+    text-align: center;
+    color: #f5f5f5; /* Texto claro no fundo escuro */
+}
+
+.header h1 {
+    /* Título no Marrom de Destaque */
+    color: var(--cor-principal); 
+}
+
+.footer p {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+/* --- Container Principal --- */
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 5%;
+}
+
+.detalhes-filme {
+    display: flex;
+    gap: 40px; 
+    /* Fundo do card no Bege Claro */
+    background-color: var(--cor-card-fundo); 
+    padding: 30px;
+    border-radius: 8px;
+    /* Sombra escura mantida para profundidade */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+    /* Cor do texto do card (escura) */
+    color: var(--cor-texto); 
+}
+
+/* --- Capa do Filme --- */
+
+.capa-filme img {
+    width: 300px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Informações e Locação --- */
+
+.info-locacao {
+    flex-grow: 1;
+}
+
+.info-locacao h2 {
+    font-size: 2.5em;
+    /* Título no Marrom de Destaque */
+    color: var(--cor-principal); 
+    margin-bottom: 15px;
+    /* Linha divisória no Marrom de Destaque */
+    border-bottom: 2px solid var(--cor-principal); 
+    padding-bottom: 10px;
+}
+
+.info-locacao p {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    /* Garante que o texto dentro do card use a cor escura */
+    color: var(--cor-texto); 
+}
+
+.sinopse {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.preco-aluguel {
+    margin: 25px 0;
+    display: flex;
+    align-items: baseline;
+}
+
+.preco-label {
+    font-size: 1.2em;
+    font-weight: 400;
+    margin-right: 15px;
+    /* Cor cinza escuro para label */
+    color: #666; 
+}
+
+.preco {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--cor-preco); /* Verde mantido para destaque financeiro */
+}
+
+/* --- Botões --- */
+
+.btn-alugar, .btn-voltar {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.btn-alugar {
+    /* Botão principal no Marrom de Destaque */
+    background-color: var(--cor-principal); 
+    /* Texto claro no botão escuro */
+    color: #F7EACF; 
+    border: none;
+    font-size: 1.2em;
+    box-shadow: 0 3px 8px rgba(193, 68, 24, 0.4); /* Sombra marrom */
+}
+
+.btn-alugar:hover {
+    /* Variação mais escura do marrom no hover */
+    background-color: #9a3512; 
+}
+
+.btn-voltar {
+    /* Botão secundário no Bege Principal */
+    background-color: var(--cor-fundo); 
+    /* Texto escuro no botão claro */
+    color: var(--cor-principal); 
+    font-size: 1em;
+    /* Borda marrom */
+    border: 1px solid var(--cor-principal); 
+}
+
+.btn-voltar:hover {
+    /* Variação mais escura do bege no hover */
+    background-color: var(--cor-voltar-hover); 
+    border-color: var(--cor-principal);
+}
+
+/* --- Responsividade (para telas menores) --- */
+
+@media (max-width: 768px) {
+    .detalhes-filme {
+        flex-direction: column; 
+        text-align: center;
+        padding: 20px;
+    }
+
+    .capa-filme {
+        text-align: center;
+    }
+
+    .capa-filme img {
+        width: 100%;
+        max-width: 250px;
+        margin-bottom: 20px;
+    }
+
+    .info-locacao h2 {
+        font-size: 2em;
+    }
+
+    .preco-aluguel {
+        justify-content: center;
+    }
+
+    .btn-alugar, .btn-voltar {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

@@ -1,0 +1,212 @@
+/* CSS Simples para Avaliações - Nível Iniciante */
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fbcd7d;
+    padding: 20px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #bf431a;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.btn-voltar {
+    background-color: white;
+    color: #bf431a;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-voltar:hover {
+    background-color: #f0f0f0;
+}
+
+/* Mensagem de sucesso/erro */
+.mensagem {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    max-width: 900px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Container principal */
+main {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Card de cada filme */
+.card-filme {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 25px;
+}
+
+.card-filme img {
+    width: 150px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.info-filme {
+    flex: 1;
+}
+
+.info-filme h2 {
+    color: #bf431a;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+select {
+    padding: 12px;
+    border: 2px solid #bf431a;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+}
+
+select:focus {
+    outline: none;
+    border-color: #d65020;
+}
+
+textarea {
+    padding: 12px;
+    border: 2px solid #bf431a;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #d65020;
+}
+
+button[type="submit"] {
+    background-color: #bf431a;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #a03515;
+}
+
+/* Mensagem quando não há filmes */
+.vazio {
+    background-color: white;
+    padding: 60px 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.vazio h2 {
+    color: #bf431a;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.vazio p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.btn-catalogo {
+    background-color: #bf431a;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-catalogo:hover {
+    background-color: #a03515;
+}
+
+/* Responsivo para celular */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 24px;
+    }
+    
+    .card-filme {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .card-filme img {
+        width: 100%;
+        height: auto;
+        max-width: 250px;
+        margin: 0 auto;
+    }
+}

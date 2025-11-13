@@ -4,11 +4,11 @@
 
 session_start();
 if (!isset($_SESSION['usuario_logado']) || !($_SESSION['is_admin'] ?? false)) {
-    header('Location: index.php');
+    header('Location: ../pages/index.php');
     exit;
 }
 
-    $conn = include '../config/config.php';
+$conn = require_once __DIR__ . '/../config/config.php'; // returns mysqli connection in $conn
 
 $mensagem = '';
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert = "INSERT INTO funcionario (idade_funcionario, nome_funcionario, salario_funcionario, turno_funcionario, cargo_funcionario, sexo_funcionario, cpf_funcionario, email_funcionario)
                        VALUES ($idade, '$nome', '$salario', '$turno', '$cargo', '$sexo', '$cpf', '$email')";
             if ($conn->query($insert)) {
-                header('Location: funcionarios.php?msg=criado');
+                header('Location: ../pages/funcionarios.php?msg=criado');
                 exit;
             } else {
                 $mensagem = 'Erro ao cadastrar: ' . $conn->error;

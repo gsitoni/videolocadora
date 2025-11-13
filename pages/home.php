@@ -24,6 +24,22 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
 //     'is_admin' => $is_admin,
 // ]); // Exibe estrutura das variáveis-chave.
 // echo "</pre>"; // Fim do bloco.
+$conn = require_once __DIR__ . '/../config/config.php'; // returns mysqli connection in $conn
+
+$filmes = [];
+try {
+    $sql = 'SELECT id_filme, ident_titulo, ident_sinopse, imagem FROM filme ORDER BY id_filme ASC LIMIT 8';
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $filmes[] = $row;
+        }
+        $stmt->close();
+    }
+} catch (Throwable $e) {
+    // Não falha a página; apenas deixa $filmes vazio
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -48,8 +64,10 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
                     <li><a href="#filmes-section">Filmes</a></li>
                     <li><a href="../pages/catalogo.php">Catálogo</a></li>
                     <li><a href="../pages/cliente_perfil.php">Perfil</a></li>
-                    <li><a href="../pages/funcionarios.php">Funcionários</a></li>
+                    <li><a href="../pages/calendario.php">Calendário</a></li>
+                    <li><a href="../pages/matrixAI.php">Assistente Inteligente</a></li>
                     <?php if ($is_admin): ?>
+                    <li><a href="../pages/funcionarios.php">Funcionários</a></li>
                     <li><a href="../pages/index.php?page=usuarios">Clientes</a></li>
                     <?php endif; ?>
                     <li class="sair"><a href="../pages/index.php" onclick="return confirm('Deseja realmente sair?')">Sair</a></li>
@@ -61,6 +79,9 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
                 </div>
                 <div class="input-busca">
                     <input type="text" placeholder="O quê você procura?">
+                </div>
+                <div class="botao-de-fechar">
+                    <i class="bi bi-x-circle"></i>
                 </div>
             </div>
         </div>
@@ -96,26 +117,47 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
     <section class="filmes" id="filmes-section">
         <h2>Destaques da Semana</h2>
         <div class="filmes-container" id="carrossel">
-            <div class="card-filme">
-                <img class="img-poster" src="../img/poster-1.jpg" alt="Poster do filme">
-                <h3>Nome do filme</h3>
-                <p>Descrição simples do filme...</p>
-            </div>
-            <div class="card-filme">
-                <img class="img-poster" src="../img/poster-2.jpg" alt="Poster do filme">
-                <h3>Nome do filme</h3>
-                <p>Descrição simples do filme...</p>
-            </div>
-            <div class="card-filme">
-                <img class="img-poster" src="../img/poster-3.jpg" alt="Poster do filme">
-                <h3>Nome do filme</h3>
-                <p>Descrição simples do filme...</p>
-            </div>
-            <div class="card-filme">
-                <img class="img-poster" src="../img/poster-4.jpg" alt="Poster do filme">
-                <h3>Nome do filme</h3>
-                <p>Descrição simples do filme...</p>
-            </div>
+            <?php if (!empty($filmes)): ?>
+                <?php foreach ($filmes as $f):
+                    $img = $f['imagem'] ?? '';
+                    $imgPath = '../img/poster-1.jpg';
+                    if (!empty($img)) {
+                        if (strpos($img, 'images/') === 0) { $imgPath = '../' . $img; }
+                        elseif (strpos($img, '/') === 0) { $imgPath = $img; }
+                        else { $imgPath = $img; }
+                    }
+                    $titulo_filme = $f['ident_titulo'] ?? 'Título';
+                    $sinopse_curta = isset($f['ident_sinopse']) ? (mb_strlen($f['ident_sinopse'])>120 ? mb_substr($f['ident_sinopse'],0,117).'...' : $f['ident_sinopse']) : '';
+                ?>
+                <a class="card-filme" href="../pages/pagamento.php?id_filme=<?php echo (int)$f['id_filme']; ?>">
+                    <img class="img-poster" src="<?php echo htmlspecialchars($imgPath); ?>" alt="<?php echo htmlspecialchars($titulo_filme); ?>" onerror="this.src='../img/poster-1.jpg'">
+                    <h3><?php echo htmlspecialchars($titulo_filme); ?></h3>
+                    <p><?php echo htmlspecialchars($sinopse_curta); ?></p>
+                </a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <!-- Fallback: mostrar posters estáticos se não houver filmes no DB -->
+                <a class="card-filme" href="../pages/pagamento.php?id_filme=1">
+                    <img class="img-poster" src="../img/poster-1.jpg" alt="Poster do filme">
+                    <h3>Nome do filme</h3>
+                    <p>Descrição simples do filme...</p>
+                </a>
+                <a class="card-filme" href="../pages/pagamento.php?id_filme=2">
+                    <img class="img-poster" src="../img/poster-2.jpg" alt="Poster do filme">
+                    <h3>Nome do filme</h3>
+                    <p>Descrição simples do filme...</p>
+                </a>
+                <a class="card-filme" href="../pages/pagamento.php?id_filme=3">
+                    <img class="img-poster" src="../img/poster-3.jpg" alt="Poster do filme">
+                    <h3>Nome do filme</h3>
+                    <p>Descrição simples do filme...</p>
+                </a>
+                <a class="card-filme" href="../pages/pagamento.php?id_filme=4">
+                    <img class="img-poster" src="../img/poster-4.jpg" alt="Poster do filme">
+                    <h3>Nome do filme</h3>
+                    <p>Descrição simples do filme...</p>
+                </a>
+            <?php endif; ?>
         </div>
         <div class="navegacao">
             <button onclick="rolar(-220)">◀</button>
@@ -144,27 +186,27 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
             <div class="membro">
                 <div class="foto"></div>
                 <h4>Pedro</h4>
-                <p>Um pouco sobre Pedro...</p>
+                
             </div>
             <div class="membro">
                 <div class="foto"></div>
                 <h4>Gaby</h4>
-                <p>Um pouco sobre Gaby...</p>
+                
             </div>
             <div class="membro">
                 <div class="foto"></div>
                 <h4>Giulia</h4>
-                <p>Um pouco sobre Giulia...</p>
+                
             </div>
             <div class="membro">
                 <div class="foto"></div>
                 <h4>Thiago</h4>
-                <p>Um pouco sobre Thiago...</p>
+                
             </div>
             <div class="membro">
                 <div class="foto"></div>
                 <h4>Tomás</h4>
-                <p>Um pouco sobre Tomás...</p>
+                
             </div>
         </div>
     </section>
@@ -180,7 +222,7 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Booleano indicando privilégios a
         <div>
             <h4>Links Rápidos:</h4>
             <p><a href="../pages/home.php">Dashboard</a></p>
-            <p><a href="../pages/catalogo.php">Catálogo</a></p>
+            <p><a href="../pages/locadora.php">Catálogo</a></p>
             <p><a href="../pages/cliente_perfil.php">Perfil do Cliente</a></p>
             <p><a href="../pages/index.html">Página Inicial</a></p>
         </div>

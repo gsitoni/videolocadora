@@ -82,28 +82,80 @@ li {
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(110, 53, 32, 0.2);
     color: #160a17;
+    margin-bottom: 15px;
 }
 
 li:hover {
-    transform: translateX(10px);
+    transform: translateX(5px);
     box-shadow: 0 8px 15px rgba(193, 68, 24, 0.4);
-    background: linear-gradient(135deg, #bf431abb 0%, #C14418 100%);
+}
+
+li strong {
+    color: #6e3520;
+    min-width: 100px;
+    font-weight: 600;
+}
+
+/* Estilos para inputs do formulário */
+li input[type="email"],
+li input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #C14418;
+    border-radius: 8px;
+    background: #F7EACF;
+    color: #6e3520;
+    font-size: 1em;
+    font-family: "Inter", sans-serif;
+    transition: all 0.3s ease;
+}
+
+li input[type="email"]:focus,
+li input[type="text"]:focus {
+    outline: none;
+    border-color: #d7301f;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(193, 68, 24, 0.3);
+}
+
+/* Botão de salvar */
+button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #C14418 0%, #d7301f 100%);
     color: #F7EACF;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(110, 53, 32, 0.2);
+    margin-bottom: 20px;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(193, 68, 24, 0.5);
+    background: linear-gradient(135deg, #d7301f 0%, #C14418 100%);
 }
 
 .poster-thumb {
-    width: 60px;
-    height: 90px;
+    width: 80px;
+    height: 120px;
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(110, 53, 32, 0.3);
     transition: transform 0.3s ease;
     border: 2px solid #6e3520;
+    margin-right: 15px;
+    vertical-align: middle;
 }
 
 li:hover .poster-thumb {
-    transform: scale(1.1);
+    transform: scale(1.15);
     border-color: #F7EACF;
+    box-shadow: 0 6px 12px rgba(193, 68, 24, 0.5);
 }
 
 .meta-year {

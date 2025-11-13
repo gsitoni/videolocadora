@@ -103,6 +103,22 @@ CREATE TABLE IF NOT EXISTS pagamento (
     FOREIGN KEY (id_locacao) REFERENCES locacao(id_locacao) ON DELETE CASCADE ON UPDATE CASCADE
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+ -- Verificar e criar tabela avaliacao se não existir
+CREATE TABLE IF NOT EXISTS avaliacao (
+  id_avaliacao int(11) NOT NULL AUTO_INCREMENT,
+  id_cliente int(11) NOT NULL,
+  id_filme int(11) NOT NULL,
+  nota int(11) NOT NULL,
+  comentario text DEFAULT NULL,
+  data_avaliacao timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (id_avaliacao),
+  UNIQUE KEY id_cliente (id_cliente,id_filme),
+  KEY id_filme (id_filme),
+  CONSTRAINT avaliacao_ibfk_1 FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
+  CONSTRAINT avaliacao_ibfk_2 FOREIGN KEY (id_filme) REFERENCES filme (id_filme)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 -- Inserir dados de exemplo apenas se as tabelas estiverem vazias
 INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password, is_admin)
 SELECT 'Admin', '00000000000', 30, '(41)99999-9999', 'admin@clubedafita.com', 'admin', 'admin123', 1
@@ -263,7 +279,18 @@ VALUES(50, '4', 50, 'Comédia', '2014-03-28', '01:39:00', 'Ralph Fiennes, Tony R
 INSERT INTO video_locadora.filme
 (id_filme, estado_filme, identificacao_filme, ident_genero, ident_data, ident_duracao, ident_elenco, ident_titulo, imagem, ident_midia, ident_nome_diretor, ident_class_indic, ident_sinopse)
 VALUES(51, '5', 51, 'Romance', '2013-11-20', '02:06:00', 'Joaquin Phoenix, Scarlett Johansson', 'Ela', 'images/her.jpg', 'Digital', 'Spike Jonze', '+14', 'Um homem solitário se apaixona por um sistema operacional inteligente');
+
+-- Inserir avaliações 
+INSERT INTO avaliacao (id_avaliacao, id_cliente, id_filme, nota, comentario, data_avaliacao)
+VALUES(1, 2, 4, 5, 'Obra-prima! Heath Ledger entregou a melhor performance como vilão da história do cinema.', '2025-11-12 17:54:38');
+INSERT INTO avaliacao (id_avaliacao, id_cliente, id_filme, nota, comentario, data_avaliacao)
+VALUES(2, 2, 12, 5, 'Final emocionante dos Vingadores! Chorei muito na cena do Tony Stark.', '2025-11-12 17:54:38');
+INSERT INTO avaliacao (id_avaliacao, id_cliente, id_filme, nota, comentario, data_avaliacao)
+VALUES(3, 2, 28, 5, 'A Viagem de Chihiro é pura magia! Animação perfeita e história emocionante.', '2025-11-12 17:54:38');
+
 -- Inserir funcionário de exemplo
 INSERT INTO funcionario (idade_funcionario, nome_funcionario, salario_funcionario, turno_funcionario, cargo_funcionario, sexo_funcionario, cpf_funcionario, email_funcionario)
 SELECT 25, 'Maria Silva', 2500.00, 'Manhã', 'Atendente', 'Feminino', '98765432100', 'maria@clubedafita.com'
 WHERE NOT EXISTS (SELECT 1 FROM funcionario WHERE cpf_funcionario = '98765432100');
+
+

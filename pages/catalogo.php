@@ -12,8 +12,18 @@ if (!isset($_SESSION['usuario_logado'])) { // Se não existe a chave 'usuario_lo
 // Abre conexão com o banco de dados; config.php retorna um objeto mysqli em $conn
 $conn = include '../config/config.php'; // include carrega e executa config.php; o return desse arquivo vira o valor de $conn
 
-// Monta a consulta para buscar todos os filmes ordenados por título
-$query = "SELECT * FROM filme ORDER BY ident_titulo"; // string SQL simples sem parâmetros (apenas leitura)
+// Monta a consulta para buscar todos os filmes com suas avaliações (média e contagem)
+// LEFT JOIN: pega todos os filmes, mesmo sem avaliações
+// AVG: calcula a média das notas
+// COUNT: conta quantas avaliações existem
+$query = "SELECT 
+            f.*,
+            AVG(a.nota) as media_nota,
+            COUNT(a.id_avaliacao) as total_avaliacoes
+          FROM filme f
+          LEFT JOIN avaliacao a ON f.id_filme = a.id_filme
+          GROUP BY f.id_filme
+          ORDER BY f.ident_titulo";
 $resultado = $conn->query($query); // Executa a query no MySQL e retorna um mysqli_result ou false
 
 // Captura informações do usuário logado a partir da sessão
@@ -43,8 +53,8 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
                 <?php if ($is_admin): ?>
                     <span class="badge-admin-nav">ADMIN</span>
                 <?php endif; ?>
+                <a href="../pages/avaliacoes.php" class="btn-avaliacoes">⭐ Avaliações</a>
                 <a href="../pages/home.php" class="btn-voltar-home">← Voltar</a>
-                <a href="../pages/cliente_perfil.php" class="btn-voltar-home">Perfil</a>
             </nav>
         </div>
     </header>
@@ -95,6 +105,35 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
                                     <i class="bi bi-person"></i> 
                                     <?php echo htmlspecialchars($filme['ident_nome_diretor']); ?> <!-- Exibe o nome do diretor -->
                                 </p>
+                                
+                                <!-- AVALIAÇÃO PÚBLICA: Mostra média de estrelas e quantidade de avaliações -->
+                                <div class="filme-avaliacao-publica">
+                                    <?php
+                                    // Pega a média de notas (pode ser NULL se não houver avaliações)
+                                    $media = $filme['media_nota'];
+                                    $total = $filme['total_avaliacoes'];
+                                    
+                                    if ($total > 0) {
+                                        // Arredonda a média para 1 casa decimal
+                                        $media_formatada = number_format($media, 1);
+                                        
+                                        // Mostra estrelas cheias e vazias
+                                        echo '<div class="estrelas">';
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            if ($i <= round($media)) {
+                                                echo '<span class="estrela cheia">⭐</span>';
+                                            } else {
+                                                echo '<span class="estrela vazia">☆</span>';
+                                            }
+                                        }
+                                        echo '</div>';
+                                        echo '<span class="avaliacao-texto">' . $media_formatada . '/5.0 (' . $total . ' avaliações)</span>';
+                                    } else {
+                                        echo '<span class="sem-avaliacao">Sem avaliações ainda</span>';
+                                    }
+                                    ?>
+                                </div>
+                                
                                 <div class="filme-classificacao">
                                     <span class="badge-classificacao">
                                         <?php echo htmlspecialchars($filme['ident_class_indic']); ?> <!-- Selo de classificação indicativa -->
@@ -115,9 +154,19 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
                                         Estado: <?php echo $filme['estado_filme']; ?>/10 <!-- Nota/estado do filme para catálogo -->
                                     </span>
                                 </div>
-                                <button class="btn-alugar" onclick="alugarFilme(<?php echo $filme['id_filme']; ?>, '<?php echo htmlspecialchars($filme['ident_titulo']); ?>')">
-                                    <i class="bi bi-cart-plus"></i> Alugar Filme
-                                </button>
+                                
+                                <!-- Botões de ação -->
+                                <div class="filme-acoes">
+                                    <a class="btn-alugar" href="../pages/pagamento.php?id_filme=<?php echo $filme['id_filme']; ?>">
+                                        <i class="bi bi-cart-plus"></i> Alugar Filme
+                                    </a>
+                                    
+                                    <?php if ($filme['total_avaliacoes'] > 0): ?>
+                                        <a class="btn-ver-avaliacoes" href="../pages/ver_avaliacoes.php?id_filme=<?php echo $filme['id_filme']; ?>">
+                                            💬 Ver todas as avaliações
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                         <?php
@@ -140,7 +189,6 @@ $is_admin = $_SESSION['is_admin'] ?? false; // Flag booleana indicando privilég
             <div class="footer-col">
                 <h4>Links Rápidos</h4>
                 <a href="../pages/home.php">Dashboard</a>
-                <a href="../pages/cliente_perfil.php">Perfil do Cliente</a>
                 <?php if ($is_admin): ?>
                     <a href="../pages/index.php?page=usuarios">Clientes</a>
                 <?php endif; ?>

@@ -16,8 +16,8 @@
             <nav class="itens-do-menu">
                 <ul>
                     <li><a href="../pages/index.html">Home</a></li>
-                    <li><a href="../pages/catalogo.php">Filmes</a></li>
-                    <li><a href="#">Locação</a></li>
+                    <li><a href="../pages/locadora.php">Filmes</a></li>
+                    <li><a href="#">Catálogo</a></li>
                     <li><a href="#">Funcionários</a></li>
                     <li><a href="../pages/index.php">Cadastro</a></li>
                 </ul>

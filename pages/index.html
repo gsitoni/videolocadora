@@ -17,10 +17,9 @@
             <img class="logotipo-imagem" src="../img/logo_site.png" alt="Logotipo do site.">
             <nav class="itens-do-menu">
                 <ul>
-                    <li><a href="../pages/home.php">Home</a></li>
-                    <li><a href="../pages/locadora.php">Filmes</a></li>
+                    <li><a href="../pages/index.html">Home</a></li>
+                    <li><a href="#filmes">Filmes</a></li>
                     <li><a href="../pages/locadora.php">Locação</a></li>
-                    <li><a href="../pages/funcionarios.php">Funcionários</a></li>
                     <li><a href="../pages/index.php" class="btn-login-menu">Entrar</a></li>
                 </ul>
             </nav>
@@ -40,7 +39,7 @@
 </header>
 <body>
     <section style="background-image: url(../img/download5.jpg);" class="banner"> </section>
-    <section class="filmes">
+    <section class="filmes" id="filmes">
         <h2>Destaques</h2>
         <div class="filmes-container" id="carrossel">
             <div class="card-filme">
@@ -153,22 +152,40 @@
         <div class="seta"></div>
     </section>
     
-    <footer>
+    <footer> <!--Adicionar interatividade-->
         <div>
             <h4>Clube da fita:</h4>
             <p>Informações diversas sobre o clube...</p>
         </div>
         <div>
             <h4>Outras informações:</h4>
-            <p>Lojas</p>
-            <p>Termos e condições</p>
-            <p>Política de privacidade</p>
+            <p><a href="../pages/lojas.php" class="footer-link">🛍️ Lojas</a></p>
+            <p><a href="../pages/termos.php" class="footer-link">📄 Termos e condições</a></p>
+            <p><a href="../pages/politica.php" class="footer-link">🔒 Política de privacidade</a></p>
         </div>
         <div>
             <h4>Contato:</h4>
-            <p>📧 Email</p>
-            <p>📱 Redes sociais</p>
-        </div>
+            <p>
+            <!-- Link de email: abre no cliente de e-mail -->
+            <a href="mailto:gabrielly4039@gmail.com?subject=Contato%20Clube%20da%20Fita" class="footer-link">
+                <i class="bi bi-envelope-fill"></i> contato@locadoraexemplo.com
+            </a>
+        </p>
+        <p>
+            <!-- Redes sociais: abrem em nova aba -->
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <i class="bi bi-facebook"></i> Facebook
+            </a>
+            &nbsp;•&nbsp;
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <i class="bi bi-instagram"></i> Instagram
+            </a>
+            &nbsp;•&nbsp;
+            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <i class="bi bi-twitter"></i> X
+            </a>
+        </p>
+    </div>
     </footer>
 <script src="../js/main.js"></script>
 </body>

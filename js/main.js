@@ -19,7 +19,9 @@ window.addEventListener("scroll", function(){
 })
 
 //Carrossel dos filmes em cartaz - Animação.
-const carrossel = document.getElementById('carrossel'); 
-function rolar(distancia) { 
-    carrossel.scrollBy({ left: distancia, behavior: 'smooth' }); 
+function rolar(distancia) {
+    const carrossel = document.getElementById('carrossel');
+    if (carrossel) {
+        carrossel.scrollBy({ left: distancia, behavior: 'smooth' });
+    }
 }

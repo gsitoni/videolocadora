@@ -1,0 +1,74 @@
+/* matrixAI.css */
+body {
+  width: 100%;
+  height: 100vh;
+  background-image: url(../img/download5.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  background: #6e3520;
+  padding: 20px;
+  border-radius: 12px;
+  width: 1100px;
+  box-shadow: 0 0 10px #5c2b19;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.chat-box {
+  height: 400px;
+  overflow-y: auto;
+  background: #FBCD7D;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.user {
+  background: #d7301f;
+  padding: 8px;
+  border-radius: 6px;
+  margin: 4px 0;
+  text-align: right;
+}
+
+.bot {
+  background: #fdd99b;
+  padding: 8px;
+  border-radius: 6px;
+  margin: 4px 0;
+  text-align: left;
+}
+
+.input-area {
+  display: flex;
+  gap: 5px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #d7301f;
+  color: white;
+  cursor: pointer;
+}

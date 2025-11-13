@@ -8,7 +8,7 @@ session_start(); // Inicia sessão para armazenar dados de autenticação e esta
 $page = $_GET['page'] ?? 'home'; // Página alvo; se não vier definida, cairá em 'home'.
 
 // Conectar ao banco de dados: include retorna o objeto mysqli definido em config.php.
-$conn = include __DIR__ . '/../config/config.php'; // Mantém uma única conexão para todo o processamento desta requisição.
+$conn = require_once __DIR__ . '/../config/config.php'; // returns mysqli connection in $conn
 
 $mensagem = ""; // Armazena feedback (sucesso/erro) a ser exibido ao usuário.
 $acesso_negado = false; // Flag para bloquear exibição de conteúdo administrativo.
@@ -30,15 +30,17 @@ if ($page === 'usuarios') {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fluxo de cadastro de novo cliente.
     if ($page === 'cadastro') {
-        // Sanitização/escape contra SQL Injection básico (ideal: prepared statements).
-        $nome_cliente      = $conn->real_escape_string($_POST['nome_cliente'] ?? '');
-        $cpf_cliente       = $conn->real_escape_string($_POST['cpf_cliente'] ?? '');
-        $idade_cliente     = $conn->real_escape_string($_POST['idade_cliente'] ?? '');
-        $telefone_cliente  = $conn->real_escape_string($_POST['telefone_cliente'] ?? '');
-        $email_cliente     = $conn->real_escape_string($_POST['email_cliente'] ?? '');
-        $username          = $conn->real_escape_string($_POST['username'] ?? '');
-        $password          = $conn->real_escape_string($_POST['password'] ?? '');
-        $password_hash     = hash('sha256', $password); // Cria o hash da senha usando SHA-256 antes de salvar
+        // Coleta e normaliza valores do formulário
+        $nome_cliente     = trim($_POST['nome_cliente'] ?? '');
+        $cpf_cliente      = trim($_POST['cpf_cliente'] ?? '');
+        $idade_cliente    = (int)($_POST['idade_cliente'] ?? 0);
+        $telefone_cliente = trim($_POST['telefone_cliente'] ?? '');
+        $email_cliente    = trim($_POST['email_cliente'] ?? '');
+        $username         = trim($_POST['username'] ?? '');
+        $password         = $_POST['password'] ?? '';
+
+        // Gera hash seguro usando password_hash (bcrypt/argon conforme disponível)
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         
         // Debug opcional do POST — descomentar para inspecionar dados recebidos.
@@ -48,58 +50,101 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!empty($nome_cliente) && !empty($cpf_cliente) && !empty($idade_cliente) && 
             !empty($telefone_cliente) && !empty($email_cliente) && !empty($username) && !empty($password)) {
             
-            // Verifica se já existe o mesmo username ou CPF (evita duplicidade).
-            $check_query = "SELECT id_cliente FROM cliente WHERE username = '$username' OR cpf_cliente = '$cpf_cliente'";
-            $check_result = $conn->query($check_query);
-            
-            if ($check_result->num_rows > 0) { // Já cadastrado.
+            // Verifica se já existe o mesmo username ou CPF usando prepared statement
+            $check_stmt = $conn->prepare("SELECT id_cliente FROM cliente WHERE username = ? OR cpf_cliente = ?");
+            $check_stmt->bind_param('ss', $username, $cpf_cliente);
+            $check_stmt->execute();
+            $check_stmt->store_result();
+
+            if ($check_stmt->num_rows > 0) { // Já cadastrado.
                 $mensagem = "<div id='mensagem' class='mensagem error'>Usuário ou CPF já cadastrado!</div>";
             } else {
-                // Monta inserção do novo cliente (melhoria: prepared statements + hashing de senha).
-                $insert_query = "INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password) 
-                                VALUES ('$nome_cliente', '$cpf_cliente', '$idade_cliente', '$telefone_cliente', '$email_cliente', '$username', '$password_hash')";
-                
-                // echo "<pre>DEBUG INSERT: "; var_dump($insert_query); echo "</pre>"; // Descomente para ver SQL gerado.
-
-                if ($conn->query($insert_query)) { // Execução OK.
-                    $mensagem = "<div id='mensagem' class='mensagem success'>Cliente cadastrado com sucesso!</div>";
-                } else { // Falhou a execução SQL.
-                    $mensagem = "<div id='mensagem' class='mensagem error'>Erro ao cadastrar: " . $conn->error . "</div>";
+                // Insere novo cliente com prepared statement e password_hash
+                $insert_stmt = $conn->prepare("INSERT INTO cliente (nome_cliente, cpf_cliente, idade_cliente, telefone_cliente, email_cliente, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                if ($insert_stmt) {
+                    $insert_stmt->bind_param('ssissss', $nome_cliente, $cpf_cliente, $idade_cliente, $telefone_cliente, $email_cliente, $username, $password_hash);
+                    if ($insert_stmt->execute()) {
+                        $mensagem = "<div id='mensagem' class='mensagem success'>Cliente cadastrado com sucesso!</div>";
+                    } else {
+                        $mensagem = "<div id='mensagem' class='mensagem error'>Erro ao cadastrar: " . htmlspecialchars($insert_stmt->error) . "</div>";
+                    }
+                    $insert_stmt->close();
+                } else {
+                    $mensagem = "<div id='mensagem' class='mensagem error'>Erro interno ao preparar cadastro.</div>";
                 }
             }
+            $check_stmt->close();
         } else { // Falha de preenchimento.
             $mensagem = "<div id='mensagem' class='mensagem error'>Preencha todos os campos!</div>";
         }
         
     // Fluxo de login.
     } elseif ($page === 'login') {
-        $username = $conn->real_escape_string($_POST['username'] ?? ''); // Sanitiza entrada de usuário.
-        $password = $conn->real_escape_string($_POST['password'] ?? ''); // Sanitiza senha (texto simples; melhorar para hash).
-        $password_hash = hash('sha256', $password); // Converte a senha para um hash - SHA256
-        
-        if (!empty($username) && !empty($password)) { // Validação mínima.
-            $login_query = "SELECT * FROM cliente WHERE username = '$username'"; // Consulta dados do usuário.
-            $result = $conn->query($login_query); // Executa query.
-            
-            if ($result->num_rows > 0) { // Encontrou o usuário.
-                $cliente = $result->fetch_assoc(); // Transforma linha em array associativo.
-                // echo "<pre>DEBUG LOGIN FETCH: "; var_dump($cliente); echo "</pre>"; // Debug opcional.
-                
-                $password_hash = hash('sha256', $password); // Gera hash SHA-256 da senha digitada.
+        $username = trim($_POST['username'] ?? '');
+        $password = $_POST['password'] ?? '';
 
-                if ($cliente['password'] === $password_hash) { // Compara o hash gerado com o hash armazenado no banco.
-                    // Armazena dados principais na sessão para uso em outras páginas.
-                    $_SESSION['usuario_logado'] = $cliente['username'];
-                    $_SESSION['nome_cliente']   = $cliente['nome_cliente'];
-                    $_SESSION['is_admin']       = (bool)$cliente['is_admin']; // Normaliza para booleano real.
-                    $_SESSION['id_cliente']     = $cliente['id_cliente'];
-                    header('Location: home.php'); // Redireciona para dashboard.
-                    exit; // Encerrar execução para evitar renderização da tela de login.
-                } else { // Senha errada.
-                    $mensagem = "<div id='mensagem' class='mensagem error'>Senha incorreta!</div>";
+        if (!empty($username) && $password !== '') { // Validação mínima.
+            $stmt = $conn->prepare("SELECT * FROM cliente WHERE username = ? LIMIT 1");
+            if ($stmt) {
+                $stmt->bind_param('s', $username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result && $result->num_rows > 0) {
+                    $cliente = $result->fetch_assoc();
+                    $stored = $cliente['password'];
+
+                    $authenticated = false;
+
+                    // 1) Se senha armazenada for um hash compatível com password_verify
+                    if (is_string($stored) && strlen($stored) > 0 && $stored[0] === '$' && password_verify($password, $stored)) {
+                        $authenticated = true;
+                    }
+
+                    // 2) Suporte a senhas legadas em SHA-256: compara e migra para password_hash
+                    if (!$authenticated && $stored === hash('sha256', $password)) {
+                        $authenticated = true;
+                        // Migra a senha para password_hash
+                        $newHash = password_hash($password, PASSWORD_DEFAULT);
+                        $upd = $conn->prepare("UPDATE cliente SET password = ? WHERE id_cliente = ?");
+                        if ($upd) {
+                            $upd->bind_param('si', $newHash, $cliente['id_cliente']);
+                            $upd->execute();
+                            $upd->close();
+                        }
+                    }
+
+                    // 3) Suporte a senhas legadas em texto claro: compara e migra para password_hash
+                    if (!$authenticated && $stored === $password) {
+                        $authenticated = true;
+                        $newHash = password_hash($password, PASSWORD_DEFAULT);
+                        $upd = $conn->prepare("UPDATE cliente SET password = ? WHERE id_cliente = ?");
+                        if ($upd) {
+                            $upd->bind_param('si', $newHash, $cliente['id_cliente']);
+                            $upd->execute();
+                            $upd->close();
+                        }
+                    }
+
+                    if ($authenticated) {
+                        // Armazena dados principais na sessão para uso em outras páginas.
+                        $_SESSION['usuario_logado'] = $cliente['username'];
+                        $_SESSION['nome_cliente']   = $cliente['nome_cliente'];
+                        $_SESSION['is_admin']       = (bool)$cliente['is_admin']; // Normaliza para booleano real.
+                        $_SESSION['id_cliente']     = $cliente['id_cliente'];
+                        $stmt->close();
+                        header('Location: home.php'); // Redireciona para dashboard.
+                        exit; // Encerrar execução para evitar renderização da tela de login.
+                    } else {
+                        $mensagem = "<div id='mensagem' class='mensagem error'>Senha incorreta!</div>";
+                    }
+                } else {
+                    $mensagem = "<div id='mensagem' class='mensagem error'>Usuário não encontrado!</div>";
                 }
-            } else { // Usuário não encontrado no banco.
-                $mensagem = "<div id='mensagem' class='mensagem error'>Usuário não encontrado!</div>";
+
+                $stmt->close();
+            } else {
+                $mensagem = "<div id='mensagem' class='mensagem error'>Erro interno ao preparar consulta de login.</div>";
             }
         } else { // Campos vazios.
             $mensagem = "<div id='mensagem' class='mensagem error'>Preencha todos os campos!</div>";
@@ -108,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fluxo de logout.
     } elseif ($page === 'logout') {
         session_destroy(); // Remove todos os dados da sessão (deslogar).
-        header('Location: index.html'); // Redireciona para página estática inicial.
+        header('Location: ../pages/index.html'); // Redireciona para página estática inicial.
         exit; // Garante término da execução.
     }
 }
@@ -154,20 +199,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
             <div class="buttons-container">
                 <?php if (isset($_SESSION['usuario_logado'])): ?> <!-- Se logado, mostra atalho para página inicial -->
-                    <a href="home.php" class="btn-link btn-destaque">
+                    <a href="../pages/home.php" class="btn-link btn-destaque">
                         <span class="btn-icon">🎬</span>
                         Ir para Página Inicial
                     </a>
                 <?php endif; ?>
                 
                 <?php if (!isset($_SESSION['usuario_logado'])): ?> <!-- Visitante: mostra botões cadastro/login -->
-                    <a href="index.php?page=cadastro" class="btn-link">Fazer Cadastro</a>
-                    <a href="index.php?page=login" class="btn-link">Fazer Login</a>
+                    <a href="../pages/index.php?page=cadastro" class="btn-link">Fazer Cadastro</a>
+                    <a href="../pages/index.php?page=login" class="btn-link">Fazer Login</a>
                 <?php else: ?>
                     <?php if ($_SESSION['is_admin']): ?> <!-- Link extra para lista de usuários se admin -->
-                        <a href="index.php?page=usuarios" class="btn-link">Ver Clientes</a> <!-- Navega para área administrativa -->
+                        <a href="../pages/index.php?page=usuarios" class="btn-link">Ver Clientes</a> <!-- Navega para área administrativa -->
                     <?php endif; ?>
-                    <form method="POST" action="index.php?page=logout" style="width: 100%;">
+                    <form method="POST" action="../pages/index.php?page=logout" style="width: 100%;">
                         <button type="submit" class="btn-link" style="width: 100%; border: none; cursor: pointer;">Sair</button> <!-- Botão de logout usando formulário POST -->
                     </form>
                 <?php endif; ?>
@@ -180,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
     <?php elseif ($page === 'cadastro'): ?> <!-- Formulário de cadastro de novo cliente -->
-        <form id="form-cadastro" class="form-container form-cadastro-completo" action="index.php?page=cadastro" method="POST">
+        <form id="form-cadastro" class="form-container form-cadastro-completo" action="../pages/index.php?page=cadastro" method="POST">
   
             <fieldset>
                 <legend>Cadastro de Cliente</legend>
@@ -242,17 +287,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <button type="submit" class="btn-cadastro">Cadastrar Cliente</button>
                     
                     <p class="link-nav">
-                        Já tem conta? <a href="index.php?page=login">Fazer Login</a>
+                        Já tem conta? <a href="../pages/index.php?page=login">Fazer Login</a>
                     </p>
                     
-                    <a href="index.php" class="btn-home">← Área de Login</a>
-                    <a href="index.html" class="btn-home-site">← Voltar ao Site</a>
+                    <a href="../pages/index.php" class="btn-home">← Área de Login</a>
+                    <a href="../pages/index.html" class="btn-home-site">← Voltar ao Site</a>
                 </div>
             </fieldset>
         </form>
         
     <?php elseif ($page === 'login'): ?> <!-- Formulário de login -->
-        <form id="form-login" class="form-container" action="index.php?page=login" method="POST">
+        <form id="form-login" class="form-container" action="../pages/index.php?page=login" method="POST">
             
             <fieldset>
                 <legend>Login</legend>
@@ -275,8 +320,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         Ainda não tem conta? <a href="index.php?page=cadastro">Cadastre-se aqui</a>
                     </p>
                     
-                    <a href="index.php" class="btn-home">← Área de Login</a>
-                    <a href="index.html" class="btn-home-site">← Voltar ao Site</a>
+                    <a href="../pages/index.php" class="btn-home">← Área de Login</a>
+                    <a href="../pages/index.html" class="btn-home-site">← Voltar ao Site</a>
                 </div>
             </fieldset>
         </form>
@@ -293,7 +338,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="buttons-container">
                     <a href="index.php" class="btn-link">← Voltar ao Início</a>
                     <?php if (!isset($_SESSION['usuario_logado'])): ?>
-                        <a href="index.php?page=login" class="btn-link">Fazer Login</a>
+                        <a href="../pages/index.php?page=login" class="btn-link">Fazer Login</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -312,7 +357,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($clientes_result->num_rows == 0): ?>
                     <div class="usuarios-vazio">
                         <p>Nenhum cliente cadastrado ainda.</p>
-                        <a href="index.php?page=cadastro" class="btn-link">Fazer primeiro cadastro</a>
+                        <a href="../pages/index.php?page=cadastro" class="btn-link">Fazer primeiro cadastro</a>
                     </div>
                 <?php else: ?>
                     <div class="usuarios-stats">
@@ -361,8 +406,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
                 
                 <div class="usuarios-actions">
-                    <a href="index.php" class="btn-voltar">← Página Principal</a>
-                    <a href="index.php?page=cadastro" class="btn-cadastro-link">+ Novo Cliente</a>
+                    <a href="../pages/index.php" class="btn-voltar">← Página Principal</a>
+                    <a href="../pages/index.php?page=cadastro" class="btn-cadastro-link">+ Novo Cliente</a>
                 </div>
             </div>
         <?php endif; ?>
