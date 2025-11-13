@@ -57,6 +57,7 @@ $cliente = $resCliente ? $resCliente->fetch_assoc() : null;
         <?php endif; ?>
 
         <div class="actions">
+            <a href="meus_filmes.php">📽️ Meus Filmes</a>
             <a href="home.php">← Voltar</a>
         </div>
     </div>

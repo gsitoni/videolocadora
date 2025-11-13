@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!-- Começo do meu HTML -->
 <!DOCTYPE html> 
 <html lang="pt-br">
@@ -12,14 +13,15 @@
 <header id="header"><!--Começo do pescoço da página-->
     <div class="container">
         <div class="flex">
-            <img class="logotipo-imagem" src="logo_site.png" alt="Logotipo do site.">
+            <img class="logotipo-imagem" src="../img/logo_site.png" alt="Logotipo do site.">
             <nav class="itens-do-menu">
                 <ul>
-                    <li><a href="../pages/index.html">Home</a></li>
-                    <li><a href="../pages/locadora.php">Filmes</a></li>
-                    <li><a href="#">Catálogo</a></li>
-                    <li><a href="#">Funcionários</a></li>
-                    <li><a href="../pages/index.php">Cadastro</a></li>
+                    <li><a href="../pages/home.php">Home</a></li>
+                    <li><a href="#filmes-section">Filmes</a></li>
+                    <li><a href="../pages/catalogo.php">Catálogo</a></li>
+                    <li><a href="../pages/meus_filmes.php">Meus Filmes</a></li>
+                    <li><a href="../pages/cliente_perfil.php">Perfil</a></li>
+                    <li><a href="../pages/calendario.php">Calendário</a></li>
                 </ul>
             </nav><!--itens do menu-->
             <div class="barra-de-busca">

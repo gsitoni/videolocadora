@@ -1,3 +1,4 @@
+/* CSS Home Page - Atualizado 2025 - Versão 2.0 */
 html {
     overflow-x: hidden;
     background-color: #fbcd7d;
@@ -67,45 +68,56 @@ header.rolagem div.barra-de-busca {
 
 .itens-do-menu {
     background-color: #bf431abb;
-    border-radius: 50PX;
-    min-width: 600px;
-    max-width: 900px;
+    border-radius: 50px;
+    min-width: 700px;
+    max-width: 1200px;
     width: auto;
-    height: 55px;
+    height: auto;
+    min-height: 60px;
     transition: .5s;
-    margin: 20px;
+    margin: 20px 10px;
     flex: 1;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 header ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+    row-gap: 5px;
 }
 
 header li {
-    display: inline-block;
-    margin: 4px 15px;
-    white-space: nowrap;
-    height: 100%;
     display: flex;
     align-items: center;
+    margin: 2px 6px;
+    white-space: nowrap;
+    height: auto;
 }
 
 header ul li a {
     color: #F7EACF;
     text-decoration: none;
-    padding: 8px 12px;
+    padding: 10px 12px;
     display: inline-block;
     transition: 0.3s;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 header ul li a:hover {
     color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
 }
 
 header ul li.sair a {
@@ -355,6 +367,19 @@ footer a:hover {
 }
 
 /* ==== RESPONSIVIDADE ==== */
+@media (max-width: 1200px) {
+  .itens-do-menu {
+    min-width: 600px;
+  }
+  header li {
+    margin: 3px 8px;
+  }
+  header ul li a {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 900px) {
   .container {
     padding: 0 5px;
@@ -367,7 +392,7 @@ footer a:hover {
     min-width: 250px;
     max-width: 100%;
     height: auto;
-    padding: 5px;
+    padding: 10px;
   }
   header ul {
     flex-wrap: wrap;
@@ -404,7 +429,7 @@ footer a:hover {
     width: 95%;
     height: auto;
     margin: 5px;
-    padding: 5px;
+    padding: 10px 5px;
   }
   header ul {
     flex-wrap: wrap;
@@ -412,11 +437,11 @@ footer a:hover {
     gap: 3px;
   }
   header li {
-    margin: 2px 5px;
-    font-size: 12px;
+    margin: 2px 4px;
+    font-size: 11px;
   }
   header ul li a {
-    padding: 5px 8px;
+    padding: 6px 8px;
     font-size: 12px;
   }
   .barra-de-busca {

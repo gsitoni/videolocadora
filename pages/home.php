@@ -47,7 +47,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Clube da Fita</title>
-     <link rel="stylesheet" href="../css/home.css">
+     <link rel="stylesheet" href="../css/home.css?v=2.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
@@ -63,6 +63,7 @@ try {
                     <li><a href="../pages/home.php">Home</a></li>
                     <li><a href="#filmes-section">Filmes</a></li>
                     <li><a href="../pages/catalogo.php">Catálogo</a></li>
+                    <li><a href="../pages/meus_filmes.php">Meus Filmes</a></li>
                     <li><a href="../pages/cliente_perfil.php">Perfil</a></li>
                     <li><a href="../pages/calendario.php">Calendário</a></li>
                     <li><a href="../pages/matrixAI.php">Assistente Inteligente</a></li>

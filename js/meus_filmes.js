@@ -30,8 +30,9 @@ function pegaLocacoes() {
       dados.forEach(filme => {
         const card = document.createElement("div");
         card.classList.add("filme-card");
+        const imagemPath = filme.imagem ? `../${filme.imagem}` : '../img/poster_padrao.png';
         card.innerHTML = `
-          <img src="${filme.imagem || 'poster_padrao.png'}" alt="${filme.nome_filme}">
+          <img src="${imagemPath}" alt="${filme.nome_filme}">
           <div class="info-filme">
             <h3>${filme.nome_filme}</h3>
             <p>Preço: R$ ${parseFloat(filme.preco_aluguel).toFixed(2).replace('.', ',')}</p>

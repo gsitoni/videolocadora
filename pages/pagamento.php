@@ -280,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id_filme > 0 && $filme) {
 
                         <div style="margin-top:10px">
                             <button type="submit">Pagar e Confirmar Aluguel</button>
-                            <a href="../pages/locadora.php" style="margin-left:12px">Voltar ao Catálogo</a>
+                            <a href="../pages/catalogo.php" style="margin-left:12px">Voltar ao Catálogo</a>
                             <a href="../pages/home.php" style="margin-left:12px">Cancelar</a>
                         </div>
                     </form>
